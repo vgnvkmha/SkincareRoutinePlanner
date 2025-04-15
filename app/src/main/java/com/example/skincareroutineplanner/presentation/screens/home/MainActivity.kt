@@ -1,4 +1,4 @@
-package com.example.skincareroutineplanner
+package com.example.skincareroutineplanner.presentation.screens.home
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
