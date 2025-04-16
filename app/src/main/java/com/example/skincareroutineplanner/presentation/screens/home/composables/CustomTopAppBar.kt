@@ -1,8 +1,12 @@
 package com.example.skincareroutineplanner.presentation.screens.home.composables
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -11,12 +15,26 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.skincareroutineplanner.presentation.screens.DarkGreen
-import com.example.skincareroutineplanner.presentation.screens.LightGray
-import com.example.skincareroutineplanner.presentation.screens.MyRed
-
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.skincareroutineplanner.R
+import com.example.skincareroutineplanner.presentation.screens.Background
+import com.example.skincareroutineplanner.presentation.screens.Error
+import com.example.skincareroutineplanner.presentation.screens.OnSecondary
+import com.example.skincareroutineplanner.presentation.screens.OnSurface
+import com.example.skincareroutineplanner.presentation.screens.Primary
+import com.example.skincareroutineplanner.presentation.screens.PrimaryDark
+import com.example.skincareroutineplanner.presentation.screens.PrimaryDarkEven
+import com.example.skincareroutineplanner.presentation.screens.Secondary
+import com.example.skincareroutineplanner.presentation.screens.Surface
 
 @Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,18 +42,45 @@ import com.example.skincareroutineplanner.presentation.screens.MyRed
 fun CustomTopAppBar() {
     TopAppBar(
         colors = TopAppBarColors(
-            containerColor = LightGray,
-            titleContentColor = DarkGreen,
-            actionIconContentColor = Color.Black,
-            scrolledContainerColor = MyRed,
-            navigationIconContentColor = MyRed
+            containerColor = Surface,
+            titleContentColor = OnSurface,
+            actionIconContentColor = PrimaryDark,
+            scrolledContainerColor = Background,
+            navigationIconContentColor = Secondary
         ),
         title = { Text(text = "Skincare Routine Tracker", style = MaterialTheme.typography.titleLarge.copy(
-            color = DarkGreen
+            color = OnSecondary
         )) },
         navigationIcon = {IconButton(enabled = true,
             onClick = { TODO("Добавить развертвывание информации о streak (что-то типа fragment)") }) {
-            Icon(Icons.Default.Favorite, contentDescription = "streak icon") //TODO("заменить иконку на огонёк")
+            Icon(painter = painterResource(id = R.drawable.streak_icon_),
+                contentDescription = "streak icon",
+                modifier = Modifier
+                    .size(24.dp)
+                    .graphicsLayer (alpha = 0.99f)
+                    .drawWithCache {
+                    val gradient = Brush.verticalGradient(
+                        colors = listOf(Error, Primary)
+                    )
+                    onDrawWithContent {
+                        drawContent()
+                        drawRect(gradient, blendMode = BlendMode.SrcAtop)
+                    }
+                },
+                tint = Color.Unspecified //убираем стандартную заливку иконки
+            )
+            Text(
+                text = "0",
+                color = Color.White,
+                fontSize = 5.sp,
+                modifier = Modifier
+                    .offset(x = 8.dp, y = (-4).dp)
+                    .background(
+                        color = OnSecondary,
+                        shape = CircleShape
+                    )
+                    .padding(horizontal = 4.dp, vertical = 2.dp)
+            )
         } },
         actions = {
 
