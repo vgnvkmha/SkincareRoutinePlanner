@@ -26,15 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skincareroutineplanner.R
-import com.example.skincareroutineplanner.presentation.screens.Background
-import com.example.skincareroutineplanner.presentation.screens.Error
-import com.example.skincareroutineplanner.presentation.screens.OnSecondary
-import com.example.skincareroutineplanner.presentation.screens.OnSurface
-import com.example.skincareroutineplanner.presentation.screens.Primary
-import com.example.skincareroutineplanner.presentation.screens.PrimaryDark
-import com.example.skincareroutineplanner.presentation.screens.PrimaryDarkEven
-import com.example.skincareroutineplanner.presentation.screens.Secondary
-import com.example.skincareroutineplanner.presentation.screens.Surface
+import com.example.skincareroutineplanner.ui.theme.*
 
 @Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +40,7 @@ fun CustomTopAppBar() {
             scrolledContainerColor = Background,
             navigationIconContentColor = Secondary
         ),
-        title = { Text(text = "Skincare Routine Tracker", style = MaterialTheme.typography.titleLarge.copy(
+        title = { Text(text = "Skincare Routine Planner", style = MaterialTheme.typography.titleLarge.copy(
             color = OnSecondary
         )) },
         navigationIcon = {IconButton(enabled = true,
@@ -60,7 +52,7 @@ fun CustomTopAppBar() {
                     .graphicsLayer (alpha = 0.99f)
                     .drawWithCache {
                     val gradient = Brush.verticalGradient(
-                        colors = listOf(Error, Primary)
+                        colors = listOf(Primary, OnSecondary, PrimaryDarkEven)
                     )
                     onDrawWithContent {
                         drawContent()
