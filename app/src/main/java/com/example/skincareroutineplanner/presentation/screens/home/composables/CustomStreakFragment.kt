@@ -7,15 +7,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skincareroutineplanner.R
+import com.example.skincareroutineplanner.ui.theme.OnPrimary
 import com.example.skincareroutineplanner.ui.theme.OnSecondary
 import com.example.skincareroutineplanner.ui.theme.Primary
 import com.example.skincareroutineplanner.ui.theme.PrimaryDarkEven
@@ -66,7 +70,7 @@ fun CustomSteakFragment() {
                     .align(Alignment.Center)
                     .padding(horizontal = 4.dp, vertical = 2.dp))
                 Text(text = "Current streak", textAlign = TextAlign.Center, color = OnSecondary, fontSize = 25.sp, modifier = Modifier
-                    .align(Alignment.BottomCenter)
+                    .align(Alignment.Center).padding(top = 120.dp)
                     .padding(horizontal = 4.dp, vertical = 2.dp))
             }
             Box(modifier = Modifier.width(200.dp).height(200.dp)) {
@@ -81,8 +85,30 @@ fun CustomSteakFragment() {
                                 drawRect(gradient, blendMode = BlendMode.SrcAtop)
                             }
                         }.align(Alignment.TopCenter))
+                Text(text = "0 day", textAlign = TextAlign.Center, color = OnSecondary, fontSize = 25.sp, modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(horizontal = 4.dp, vertical = 2.dp))
+                Text(text = "Longest streak", textAlign = TextAlign.Center, color = OnSecondary, fontSize = 25.sp, modifier = Modifier
+                    .align(Alignment.Center).padding(top = 120.dp)
+                    .padding(horizontal = 4.dp, vertical = 2.dp))
+
             }
+
         }
+        Column(modifier = Modifier.fillMaxSize()) {
+            Text(text = "Как это работает?", style = MaterialTheme.typography.titleLarge.copy(
+                color = OnSecondary
+            ),modifier = Modifier.fillMaxWidth().padding(horizontal = 100.dp)
+            )
+            Text(text = "Выполняй все свои задачи утром и вечером каждый день, чтобы твой streak рос",
+                modifier = Modifier.padding(vertical = 20.dp),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = OnSecondary
+                ))
+
+        }
+
     }
 
 
