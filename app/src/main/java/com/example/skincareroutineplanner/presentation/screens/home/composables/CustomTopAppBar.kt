@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,14 +35,14 @@ import com.example.skincareroutineplanner.ui.theme.*
 fun CustomTopAppBar() {
     TopAppBar(
         colors = TopAppBarColors(
-            containerColor = Surface,
-            titleContentColor = OnSurface,
-            actionIconContentColor = PrimaryDark,
+            containerColor = PrimaryContainer,
+            titleContentColor = OnPrimaryContainer,
+            actionIconContentColor = OnPrimaryContainer,
             scrolledContainerColor = Background,
-            navigationIconContentColor = Secondary
+            navigationIconContentColor = OnPrimaryContainer
         ),
-        title = { Text(text = "Skincare Routine Planner", style = MaterialTheme.typography.titleLarge.copy(
-            color = OnSecondary
+        title = { Text(text = "Skincare Routine Planner", modifier = Modifier.padding(15.dp), style = MaterialTheme.typography.titleLarge.copy(
+            color = OnPrimaryContainer
         )) },
         navigationIcon = {IconButton(enabled = true,
             onClick = { TODO("Добавить развертвывание информации о streak (что-то типа fragment)") }) {
@@ -52,7 +53,7 @@ fun CustomTopAppBar() {
                     .graphicsLayer (alpha = 0.99f)
                     .drawWithCache {
                     val gradient = Brush.verticalGradient(
-                        colors = listOf(Primary, OnSecondary, PrimaryDarkEven)
+                        colors = listOf(SecondaryDark, Secondary, PrimaryDark, Primary)
                     )
                     onDrawWithContent {
                         drawContent()
