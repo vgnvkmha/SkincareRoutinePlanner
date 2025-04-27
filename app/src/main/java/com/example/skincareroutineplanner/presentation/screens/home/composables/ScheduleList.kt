@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -16,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,12 +28,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.skincareroutineplanner.R
 import com.example.skincareroutineplanner.ui.theme.Background
+import com.example.skincareroutineplanner.ui.theme.OnPrimary
+import com.example.skincareroutineplanner.ui.theme.OnPrimaryContainer
+import com.example.skincareroutineplanner.ui.theme.OnSurface
+import com.example.skincareroutineplanner.ui.theme.Primary
+import com.example.skincareroutineplanner.ui.theme.PrimaryContainer
 import com.example.skincareroutineplanner.ui.theme.Surface
+import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 
 @Preview(showBackground = true)
 @Composable
@@ -43,7 +50,7 @@ fun ScheduleList() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp).background(Background)
     ) {
 
         // Заголовок с иконкой
@@ -55,12 +62,15 @@ fun ScheduleList() {
         ) {
             Icon(
                 imageVector = Icons.Default.Create,
+                tint = Primary,
                 contentDescription = "Note Icon",
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = "0 из 1 задачи завершено",
+                fontFamily = mainFontFamily,
+                fontWeight = FontWeight.Normal,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center
@@ -70,15 +80,18 @@ fun ScheduleList() {
         // Основной контейнер
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().background(Surface)
         ) {
 
             // Заголовок "Моя рутина"
             Text(
                 text = "Моя рутина",
+                color = OnPrimaryContainer,
+                fontFamily = mainFontFamily,
+                fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().background(PrimaryContainer)
             )
 
             // Статистика и кнопка "Отметить всё"
@@ -87,18 +100,26 @@ fun ScheduleList() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "0 из 10 средства использовано",
+                    text = "0 из 10 средств использовано",
+                    color = OnSurface,
+                    fontFamily = mainFontFamily,
+                    fontWeight = FontWeight.Black,
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = "Отметить всё",
-                    style = MaterialTheme.typography.bodyMedium
+
+                    fontFamily = mainFontFamily,
+                    fontWeight = FontWeight.Black,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 IconButton(onClick = { /* TODO */ }) {
                     Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Отметить все средства"
+                        painter = painterResource(id = R.drawable.done),
+                        contentDescription = "Отметить все средства",
+                        tint = OnPrimary,
+                        modifier = Modifier.size(38.dp).background(Primary)
                     )
                 }
             }
@@ -106,13 +127,14 @@ fun ScheduleList() {
             // Список карточек
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxHeight(0.6f).background(Surface)
+                modifier = Modifier.fillMaxHeight(0.4f).background(Surface)
             ) {
                 items(components) { component ->
                     Card(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { /* TODO: отметить элемент */ },
+                            .fillMaxWidth().height(60.dp)
+                            .clickable { /* TODO: отметить элемент */ }
+                            ,
                         shape = RoundedCornerShape(16.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = Background
@@ -122,7 +144,8 @@ fun ScheduleList() {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(16.dp)
+                            ,
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
@@ -134,8 +157,9 @@ fun ScheduleList() {
                                 Icon(
                                     painter = painterResource(id = R.drawable.done),
                                     contentDescription = "Пометить как использованное",
+                                    tint = OnPrimary,
                                     modifier = Modifier
-                                        .size(48.dp)
+                                        .size(48.dp).background(Primary)
                                 )
                             }
                         }
@@ -150,7 +174,7 @@ fun ScheduleList() {
                     .clickable { /* TODO: действие по пропуску */ },
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Background
+                    containerColor = PrimaryContainer
                 )
             ) {
                 Text(

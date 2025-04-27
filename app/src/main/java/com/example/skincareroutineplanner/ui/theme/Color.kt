@@ -12,7 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 // Primary colors (Fresh Mint)
 val Primary = Color(0xFF82D9A7) // Нежная мята
 val OnPrimary = Color(0xFFFFFFFF)
-val PrimaryContainer = Color(0xFFB5EFCB)
+val PrimaryContainer = Color(0xFFADD3BC)
 val OnPrimaryContainer = Color(0xFF063E25)
 
 // Dark Mode
