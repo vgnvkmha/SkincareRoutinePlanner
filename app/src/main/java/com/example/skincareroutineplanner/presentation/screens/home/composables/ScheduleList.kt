@@ -80,7 +80,9 @@ fun ScheduleList() {
         // Основной контейнер
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
-            modifier = Modifier.fillMaxSize().background(Surface)
+            modifier = Modifier.fillMaxSize().background(
+                color = Background,
+            )
         ) {
 
             // Заголовок "Моя рутина"
@@ -91,7 +93,10 @@ fun ScheduleList() {
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.fillMaxWidth().background(PrimaryContainer)
+                modifier = Modifier.fillMaxWidth().background(
+                    color = PrimaryContainer,
+                    shape = RoundedCornerShape(12.dp)
+                )
             )
 
             // Статистика и кнопка "Отметить всё"
@@ -119,7 +124,7 @@ fun ScheduleList() {
                         painter = painterResource(id = R.drawable.done),
                         contentDescription = "Отметить все средства",
                         tint = OnPrimary,
-                        modifier = Modifier.size(38.dp).background(Primary)
+                        modifier = Modifier.size(40.dp).background(Primary)
                     )
                 }
             }

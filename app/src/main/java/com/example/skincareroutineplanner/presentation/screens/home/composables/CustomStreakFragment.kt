@@ -1,6 +1,5 @@
 package com.example.skincareroutineplanner.presentation.screens.home.composables
 
-import android.graphics.Paint.Align
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,12 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,33 +36,26 @@ import androidx.compose.ui.unit.sp
 import com.example.skincareroutineplanner.R
 import com.example.skincareroutineplanner.ui.theme.Background
 import com.example.skincareroutineplanner.ui.theme.OnBackground
-import com.example.skincareroutineplanner.ui.theme.OnPrimary
-import com.example.skincareroutineplanner.ui.theme.OnPrimaryContainer
-import com.example.skincareroutineplanner.ui.theme.OnPrimaryDark
-import com.example.skincareroutineplanner.ui.theme.OnSecondaryContainer
 import com.example.skincareroutineplanner.ui.theme.OnSurface
-import com.example.skincareroutineplanner.ui.theme.OnSurfaceDark
 import com.example.skincareroutineplanner.ui.theme.Primary
 import com.example.skincareroutineplanner.ui.theme.PrimaryContainer
-import com.example.skincareroutineplanner.ui.theme.PrimaryContainerDark
 import com.example.skincareroutineplanner.ui.theme.PrimaryDark
 import com.example.skincareroutineplanner.ui.theme.Secondary
 import com.example.skincareroutineplanner.ui.theme.SecondaryDark
 import com.example.skincareroutineplanner.ui.theme.Surface
-import com.example.skincareroutineplanner.ui.theme.SurfaceDark
 import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 
 
 @Preview(showBackground = true)
 @Composable
 fun CustomSteakFragment() {
-    Column(modifier = Modifier.fillMaxWidth().height(400.dp)) {
+    Column(modifier = Modifier.fillMaxWidth().height(400.dp).background(Background)) {
         Row(modifier = Modifier.fillMaxWidth().height(70.dp).background(Surface)) {
             IconButton(enabled = true,
                 onClick = {}) {
                 Icon(Icons.Default.Close, contentDescription = "To close fragment")
             }
-            Text(text = "Streaks", color = OnSurface, fontSize = 30.sp, textAlign = TextAlign.Center,
+            Text(text = "Серии", color = OnSurface, fontSize = 30.sp, textAlign = TextAlign.Center,
                 style = TextStyle(
                     shadow = Shadow(
                         color = PrimaryContainer, blurRadius = 1f, offset = Offset(5.0f, 10.0f)
@@ -89,10 +77,10 @@ fun CustomSteakFragment() {
                                 drawRect(gradient, blendMode = BlendMode.SrcAtop)
                             }
                         }.align(Alignment.TopCenter))
-                Text(text = "0 day", textAlign = TextAlign.Center, fontFamily = mainFontFamily, fontWeight = FontWeight.Black, color = OnSurface, fontSize = 25.sp, modifier = Modifier
+                Text(text = "0 дней", textAlign = TextAlign.Center, fontFamily = mainFontFamily, fontWeight = FontWeight.Black, color = OnSurface, fontSize = 25.sp, modifier = Modifier
                     .align(Alignment.Center)
                     .padding(horizontal = 4.dp, vertical = 2.dp))
-                Text(text = "Current streak", fontFamily = mainFontFamily, fontWeight = FontWeight.Black, textAlign = TextAlign.Center, color = OnSurface, fontSize = 25.sp, modifier = Modifier
+                Text(text = "Текущая серия", fontFamily = mainFontFamily, fontWeight = FontWeight.Black, textAlign = TextAlign.Center, color = OnSurface, fontSize = 25.sp, modifier = Modifier
                     .align(Alignment.Center).padding(top = 120.dp)
                     .padding(horizontal = 4.dp, vertical = 2.dp))
             }
@@ -108,10 +96,10 @@ fun CustomSteakFragment() {
                                 drawRect(gradient, blendMode = BlendMode.SrcAtop)
                             }
                         }.align(Alignment.TopCenter))
-                Text(text = "0 day", textAlign = TextAlign.Center, fontFamily = mainFontFamily, fontWeight = FontWeight.Black, color = OnSurface, fontSize = 25.sp, modifier = Modifier
+                Text(text = "0 дней", textAlign = TextAlign.Center, fontFamily = mainFontFamily, fontWeight = FontWeight.Black, color = OnSurface, fontSize = 25.sp, modifier = Modifier
                     .align(Alignment.Center)
                     .padding(horizontal = 4.dp, vertical = 2.dp))
-                Text(text = "Longest streak", textAlign = TextAlign.Center, fontFamily = mainFontFamily, fontWeight = FontWeight.Black, color = OnSurface, fontSize = 25.sp, modifier = Modifier
+                Text(text = "Наибольшая серия", textAlign = TextAlign.Center, fontFamily = mainFontFamily, fontWeight = FontWeight.Black, color = OnSurface, fontSize = 25.sp, modifier = Modifier
                     .align(Alignment.Center).padding(top = 120.dp)
                     .padding(horizontal = 4.dp, vertical = 2.dp))
 

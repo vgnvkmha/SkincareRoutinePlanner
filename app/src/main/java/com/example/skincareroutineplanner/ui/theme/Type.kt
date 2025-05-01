@@ -13,28 +13,39 @@ val mainFontFamily = FontFamily(
     Font(R.font.opensans_italic_variable_font_wdth_wght, FontWeight.Black)
 )
 // Set of Material typography styles to start with
-val Typography = Typography(
-    bodyLarge = TextStyle(
+private val typography = Typography(
+    headlineSmall = TextStyle(
         fontFamily = mainFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
+        fontSize = 24.sp,
+        lineHeight = 32.sp
+    ),
     titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
+        fontFamily = mainFontFamily,
+        fontWeight = FontWeight.Black,
+        fontSize = 18.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
+    bodyLarge = TextStyle(
+        fontFamily = mainFontFamily,
+        fontWeight = FontWeight.Black,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = mainFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.25.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = mainFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     )
-    */
 )

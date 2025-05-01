@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +32,7 @@ import com.example.skincareroutineplanner.ui.theme.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBar() {
+
     TopAppBar(
         colors = TopAppBarColors(
             containerColor = PrimaryContainer,
@@ -69,7 +69,7 @@ fun CustomTopAppBar() {
                 modifier = Modifier
                     .offset(x = 8.dp, y = (-4).dp)
                     .background(
-                        color = OnSecondary,
+                        color = OnPrimaryContainer,
                         shape = CircleShape
                     )
                     .padding(horizontal = 4.dp, vertical = 2.dp)

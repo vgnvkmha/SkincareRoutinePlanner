@@ -4,40 +4,65 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.Text
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 private val DarkColorScheme = darkColorScheme(
     primary = Primary,
-    secondary = Secondary,
-    tertiary = Pink80,
     onPrimary = OnPrimary,
+    secondary = Secondary,
     onSecondary = OnSecondary,
+    tertiary = Tertiary,
+    onTertiary = OnTertiary,
+    secondaryContainer = SecondaryContainer,
+    onSecondaryContainer = OnSecondaryContainer,
+    primaryContainer = PrimaryContainer,
+    onPrimaryContainer = OnPrimaryContainer,
+    tertiaryContainer = TertiaryContainer,
+    onTertiaryContainer = OnTertiaryContainer,
     surface = Surface,
     onSurface = OnSurface,
+    background = Background,
+    onBackground = OnBackground,
     onError = OnError,
+    errorContainer = ErrorContainer,
+    onErrorContainer = OnErrorContainer,
     error = Error,
-
+    outline = Outline
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = PrimaryDark,
+    onPrimary = OnPrimaryDark,
+    secondary = SecondaryDark,
+    onSecondary = OnSecondaryDark,
+    tertiary = TertiaryDark,
+    onTertiary = OnTertiaryDark,
+    primaryContainer = PrimaryContainerDark,
+    onPrimaryContainer = OnPrimaryContainerDark,
+    secondaryContainer = SecondaryContainerDark,
+    onSecondaryContainer = OnSecondaryContainerDark,
+    tertiaryContainer = TertiaryContainerDark,
+    onTertiaryContainer = OnTertiaryContainerDark,
+    surface = SurfaceDark,
+    onSurface = OnSurfaceDark,
+    background = BackgroundDark,
+    onBackground = OnBackgroundDark,
+    error = Error,
+    onError = OnError,
+    errorContainer = ErrorContainer,
+    onErrorContainer = OnErrorContainer,
+    outline = OutlineDark
 )
 
 @Composable
@@ -59,7 +84,7 @@ fun SkincareRoutinePlannerTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = typography,
         content = content
     )
 }
