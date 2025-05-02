@@ -30,12 +30,12 @@ import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 @Preview(showBackground = true)
 @Composable
 fun TimeRangeSelector() {
-    val options = listOf("7 days", "2 weeks", "3 weeks", "4 weeks")
+    val options = listOf("7 дней", "2 недели", "3 недели", "месяц")
     var selectedOption = remember { mutableStateOf("7 days") }
 
     Row(
         modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 8.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(20.dp))
             .background(Background)
             .padding(4.dp),
