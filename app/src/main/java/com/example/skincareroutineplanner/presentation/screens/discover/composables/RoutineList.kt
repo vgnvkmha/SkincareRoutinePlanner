@@ -5,11 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -44,9 +46,10 @@ fun RoutineList(){
         Row(modifier = Modifier.fillMaxWidth().background(color = SecondaryContainer,
             shape = RoundedCornerShape(16.dp)),
             horizontalArrangement = Arrangement.spacedBy(25.dp)) {
-            Text(text = "Добавить средства в рутину", modifier = Modifier.padding(16.dp),
+            Text(text = "Твои средства", modifier = Modifier.padding(16.dp),
                 fontFamily = mainFontFamily, fontWeight = FontWeight.Black,
                 fontSize = 20.sp, color = OnSecondaryContainer)
+            Spacer(modifier = Modifier.width(110.dp))
             IconButton(enabled = true, onClick = {}, modifier = Modifier.align(Alignment.CenterVertically)) {
                 Icon(Icons.Default.Add, contentDescription = "Добавить средство",
                     modifier = Modifier.size(48.dp))

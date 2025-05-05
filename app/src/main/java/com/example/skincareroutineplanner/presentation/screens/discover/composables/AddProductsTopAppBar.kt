@@ -35,7 +35,7 @@ fun AddScreenTopAppBar() {
             scrolledContainerColor = Surface,
             navigationIconContentColor = OnPrimaryContainer
         ),
-        title = { Text(text = "Добавить средство", modifier = Modifier.padding(16.dp),
+        title = { Text(text = "Найти средство", modifier = Modifier.padding(16.dp),
             fontFamily = mainFontFamily, fontWeight = FontWeight.Black
         ) },
         navigationIcon = {
