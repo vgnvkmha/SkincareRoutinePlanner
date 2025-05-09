@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.example.skincareroutineplanner"
         minSdk = 33
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -50,7 +50,15 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.kotlin.plugin.serialization)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
