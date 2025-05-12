@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -30,16 +31,17 @@ import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 @Preview(showBackground = true)
 @Composable
 fun TimeRangeSelector() {
-    val options = listOf("7 дней", "2 недели", "3 недели", "месяц")
+    val options = listOf("7 дней", "2 недели", "месяц")
     var selectedOption = remember { mutableStateOf("7 days") }
 
     Row(
         modifier = Modifier
-            .padding(horizontal = 8.dp, vertical = 8.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(20.dp))
             .background(Background)
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(4.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         options.forEach { option ->
             val isSelected = option == selectedOption.value

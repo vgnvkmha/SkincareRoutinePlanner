@@ -4,4 +4,5 @@
     <style name="Theme.SkincareRoutinePlanner" parent="android:Theme.Material.Light.NoActionBar" >
 
     </style>
+    <style name="Theme.MyAppCompat" parent="Theme.AppCompat"/>
 </resources>
