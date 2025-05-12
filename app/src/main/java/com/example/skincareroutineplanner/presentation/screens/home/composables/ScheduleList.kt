@@ -132,7 +132,7 @@ fun ScheduleList() {
             // Список карточек
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxHeight(0.4f).background(Surface)
+                modifier = Modifier.fillMaxHeight(0.8f).background(Surface)
             ) {
                 items(components) { component ->
                     Card(

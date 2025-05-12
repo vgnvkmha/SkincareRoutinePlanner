@@ -13,18 +13,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.skincareroutineplanner.ui.theme.Background
 import com.example.skincareroutineplanner.ui.theme.OnSecondaryContainer
-import com.example.skincareroutineplanner.ui.theme.OnSecondaryDark
 import com.example.skincareroutineplanner.ui.theme.OnSurface
-import com.example.skincareroutineplanner.ui.theme.Outline
-import com.example.skincareroutineplanner.ui.theme.Secondary
 import com.example.skincareroutineplanner.ui.theme.SecondaryContainer
-import com.example.skincareroutineplanner.ui.theme.SecondaryContainerDark
 import com.example.skincareroutineplanner.ui.theme.Surface
 import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 
@@ -32,7 +27,7 @@ import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 @Composable
 fun TimeRangeSelector() {
     val options = listOf("7 дней", "2 недели", "месяц")
-    var selectedOption = remember { mutableStateOf("7 days") }
+    val selectedOption = remember { mutableStateOf("7 days") }
 
     Row(
         modifier = Modifier
