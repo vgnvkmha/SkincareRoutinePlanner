@@ -2,11 +2,11 @@
 agp = "8.6.1"
 fragment = "1.8.6"
 kotlin = "2.0.0"
-coreKtx = "1.16.0"
+coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-kotlinxCoroutinesAndroid = "1.7.0"
+kotlinxCoroutinesAndroid = "1.7.3"
 kotlinxSerializationJson = "1.6.3"
 ktorClientContentNegotiation = "2.3.2"
 ktorClientCore = "2.3.2"
@@ -18,8 +18,7 @@ activityCompose = "1.10.1"
 composeBom = "2024.04.01"
 roomRuntime = "2.6.1"
 appcompat = "1.7.0"
-navigationCompose = "2.9.0"
-navigationComposeJvmstubs = "2.9.0"
+navigationCompose = "2.7.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,12 +46,10 @@ ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorCli
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktorClientSerialization" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorSerializationKotlinxJson" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-navigation-compose = {module = "androidx.navigation:navigation-compose", version = "2.9.0"}
-androidx-navigation-compose-jvmstubs = { group = "androidx.navigation", name = "navigation-compose-jvmstubs", version.ref = "navigationComposeJvmstubs" }
+navigation-compose = {module = "androidx.navigation:navigation-compose", version = "navigationCompose"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

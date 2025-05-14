@@ -37,7 +37,9 @@ import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 @Composable
 fun RoutineAnalytic() {
     val items = listOf("Название A", "Название B", "Название C", "Название D")
-    Column(modifier = Modifier.fillMaxSize().padding(8.dp).background(Background),
+    Column(modifier = Modifier.fillMaxWidth()
+        .height(750.dp)
+        .padding(8.dp).background(Background),
         verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(text = "Статистика", fontSize = 30.sp, fontFamily = mainFontFamily,
             fontWeight = FontWeight.Black)

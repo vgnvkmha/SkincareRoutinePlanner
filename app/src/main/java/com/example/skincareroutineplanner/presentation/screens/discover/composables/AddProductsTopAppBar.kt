@@ -4,8 +4,7 @@ package com.example.skincareroutineplanner.presentation.screens.discover.composa
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -16,7 +15,6 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.skincareroutineplanner.ui.theme.OnPrimaryContainer
 import com.example.skincareroutineplanner.ui.theme.PrimaryContainer
@@ -24,9 +22,13 @@ import com.example.skincareroutineplanner.ui.theme.Surface
 import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 
 
-@Preview(showBackground = true)
+
 @Composable
-fun AddScreenTopAppBar() {
+fun AddScreenTopAppBar(
+    lambdaBack: () -> Unit,
+    lambdaSearch: () -> Unit
+
+) {
     TopAppBar(
         colors = TopAppBarColors(
             containerColor = PrimaryContainer,
@@ -39,17 +41,14 @@ fun AddScreenTopAppBar() {
             fontFamily = mainFontFamily, fontWeight = FontWeight.Black
         ) },
         navigationIcon = {
-            IconButton(enabled = true, onClick = {
-                TODO("Добавить возвращение на экран со всеми средствами" +
-                        "пользователя") }) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Возвращение на " +
+            IconButton(enabled = true, onClick =  lambdaBack) {
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Возвращение на " +
                         "экран со средствами")
             }
         },
         actions = {
-            IconButton(enabled = true, onClick = {
-
-            }) {
+            IconButton(enabled = true, onClick = lambdaSearch) {
                 Icon(Icons.Default.Search, contentDescription = "кнопка добавления средства")
             }
         }

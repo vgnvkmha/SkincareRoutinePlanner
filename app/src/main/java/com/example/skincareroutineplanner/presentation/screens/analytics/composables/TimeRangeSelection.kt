@@ -31,7 +31,6 @@ fun TimeRangeSelector() {
 
     Row(
         modifier = Modifier
-            .padding(horizontal = 12.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(20.dp))
             .background(Background)
             .padding(4.dp)

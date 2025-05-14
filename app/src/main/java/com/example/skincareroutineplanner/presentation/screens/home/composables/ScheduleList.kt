@@ -49,7 +49,8 @@ fun ScheduleList() {
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .height(750.dp)
             .background(Background)
     ) {
 
