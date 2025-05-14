@@ -50,14 +50,15 @@ fun ScheduleList() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp).background(Background)
+            .background(Background)
     ) {
 
         // Заголовок с иконкой
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp),
+//                .padding(bottom = 16.dp)
+                    ,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
