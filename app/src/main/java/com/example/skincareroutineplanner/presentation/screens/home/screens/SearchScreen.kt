@@ -30,4 +30,5 @@ fun SearchScreen(
             lambdaSettings
         )
     }
+
 }
