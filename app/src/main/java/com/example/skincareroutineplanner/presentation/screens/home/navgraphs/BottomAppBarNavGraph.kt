@@ -26,9 +26,9 @@ fun BottomAppBarNavigation() {
         composable("search") {
             SearchScreen(
                 lambdaBack = {navController.navigate("home")},
-                lambdaSearch = {
-                    TODO("Добавить экран с поиском средств")
-                },
+//                lambdaSearch = {
+//                    TODO("Добавить экран с поиском средств")
+//                },
                 lambdaHome = {navController.navigate("home")},
                 lambdaAnalytic = {navController.navigate("analytic")},
                 lambdaSettings = {}
