@@ -7,7 +7,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.skincareroutineplanner.presentation.screens.home.screens.AnalyticsScreen
 import com.example.skincareroutineplanner.presentation.screens.home.screens.HomeScreen
 import com.example.skincareroutineplanner.presentation.screens.home.screens.SearchScreen
-import kotlinx.serialization.Serializable
 
 
 

@@ -12,7 +12,6 @@ import com.example.skincareroutineplanner.presentation.screens.home.composables.
 @Composable
 fun SearchScreen(
     lambdaBack: () -> Unit,
-    lambdaSearch:() -> Unit,
     lambdaHome: () -> Unit,
     lambdaSettings: () -> Unit,
     lambdaAnalytic: () ->Unit
@@ -21,7 +20,7 @@ fun SearchScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         AddScreenTopAppBar(
-            lambdaBack, lambdaSearch
+            lambdaBack
         )
         RoutineList()
         CustomBottomAppBar(
