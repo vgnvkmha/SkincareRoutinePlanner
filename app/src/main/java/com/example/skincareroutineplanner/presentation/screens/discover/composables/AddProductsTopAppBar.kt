@@ -36,11 +36,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.lifecycleScope
-import com.example.skincareroutineplanner.data.KtorClient
-import com.example.skincareroutineplanner.data.Product
 import com.example.skincareroutineplanner.data.ProductViewModel
-import io.ktor.client.call.body
-import io.ktor.client.request.get
 import kotlinx.coroutines.launch
 
 
@@ -56,7 +52,6 @@ fun AddScreenTopAppBar(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
     val products by viewModel.products
-
     TopAppBar(
         colors = TopAppBarColors(
             containerColor = PrimaryContainer,
@@ -79,16 +74,17 @@ fun AddScreenTopAppBar(
                         onDone = {
                             keyboardController?.hide()
                             if (searchText.isNotBlank()) {
-                                activity?.lifecycleScope?.launch {
-                                    try {
-                                        viewModel.fetchProducts(searchText)
-
-                                    }
-                                    catch (e:Exception) {
-
-                                    }
-
-                                }
+                                TODO("добавить логику работу этой функции")
+//                                activity?.lifecycleScope?.launch {
+//                                    try {
+//                                        viewModel.fetchProducts(searchText)
+//
+//                                    }
+//                                    catch (e:Exception) {
+//
+//                                    }
+//
+//                                }
                             }
                             else {
                                 Toast.makeText(context, "Введите название средства",
