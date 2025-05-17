@@ -12,8 +12,8 @@ interface MyDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun addProduct(product: Product)
 
-    @Query("SELECT * FROM myproducts ORDER BY id ASC")
-    suspend fun getAllProducts(): LiveData<List<Product>>
+    @Query("SELECT * FROM myProducts ORDER BY id ASC")
+    fun getAllProducts(): LiveData<List<Product>>
 
     @Query("SELECT * FROM myProducts WHERE id=:id LIMIT 1")
     suspend fun getProductById(id:Int) : Product?
@@ -21,6 +21,6 @@ interface MyDao {
     @Query("DELETE FROM myProducts")
     suspend fun deleteAllProducts()
 
-    @Query("DELETE FROM myProducts WHERE id=:id LIMIT 1")
+    @Query("DELETE FROM myProducts WHERE id=:id")
     suspend fun deleteProductById(id: Int)
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 
 class ProductsRepository(private val dao: MyDao) {
     // Получение всех продуктов
-    suspend fun getAllProducts(): LiveData<List<Product>> {
+    fun getAllProducts(): LiveData<List<Product>> {
         return dao.getAllProducts()
     }
     // Получение одного продукта по ID

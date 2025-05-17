@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
+    id("kotlin-kapt")
 }
 
 android {
@@ -55,7 +56,9 @@ android {
 }
 
 dependencies {
+    kapt(libs.androidx.room.compiler)
     implementation("androidx.navigation:navigation-compose:2.9.0")
+    implementation(libs.coil.compose)
     implementation(libs.androidx.fragment)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)

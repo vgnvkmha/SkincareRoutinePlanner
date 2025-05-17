@@ -38,15 +38,16 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.lifecycleScope
 import com.example.skincareroutineplanner.data.KtorClient
 import com.example.skincareroutineplanner.data.Product
+import com.example.skincareroutineplanner.data.ProductViewModel
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 
 
 @Composable
 fun AddScreenTopAppBar(
-    lambdaBack: () -> Unit
+    lambdaBack: () -> Unit,
+    viewModel: ProductViewModel
 ) {
     val context = LocalContext.current
     val activity = context as? ComponentActivity
@@ -54,6 +55,7 @@ fun AddScreenTopAppBar(
     var searchText by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
+    val products by viewModel.products
 
     TopAppBar(
         colors = TopAppBarColors(
@@ -77,29 +79,13 @@ fun AddScreenTopAppBar(
                         onDone = {
                             keyboardController?.hide()
                             if (searchText.isNotBlank()) {
-//                                val ip = "172.20.10.8"
-                                val localIP = "10.0.2.2"
                                 activity?.lifecycleScope?.launch {
                                     try {
-                                        val products:List<Product> = KtorClient.client.
-                                        get("http://$localIP:8080/api/products").body()
-                                        val product = products.filter { searchText in it.name}
-                                        if (product.isNotEmpty()) {
-                                            Toast.makeText(context, "$product", Toast.LENGTH_LONG).show()
-                                        }
-                                        else {
-                                            Toast.makeText(context,
-                                                "Введите корректное название",
-                                                Toast.LENGTH_LONG).show()
-                                        }
+                                        viewModel.fetchProducts(searchText)
+
                                     }
                                     catch (e:Exception) {
-                                        Toast.makeText(
-                                            context,
-                                            "Ошибка при соединении с сервером, попробуйте позже",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        e.printStackTrace()
+
                                     }
 
                                 }

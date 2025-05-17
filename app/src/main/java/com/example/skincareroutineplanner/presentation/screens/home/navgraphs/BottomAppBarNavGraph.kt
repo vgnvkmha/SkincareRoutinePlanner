@@ -1,9 +1,14 @@
 package com.example.skincareroutineplanner.presentation.screens.home.navgraphs
 
+import android.app.Application
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.skincareroutineplanner.data.ProductViewModel
+import com.example.skincareroutineplanner.data.ProductViewModelFactory
 import com.example.skincareroutineplanner.presentation.screens.home.screens.AnalyticsScreen
 import com.example.skincareroutineplanner.presentation.screens.home.screens.HomeScreen
 import com.example.skincareroutineplanner.presentation.screens.home.screens.SearchScreen
@@ -13,6 +18,11 @@ import com.example.skincareroutineplanner.presentation.screens.home.screens.Sear
 @Composable
 fun BottomAppBarNavigation() {
     val navController = rememberNavController()
+    val context = LocalContext.current
+    val application = context.applicationContext as Application
+    val viewModel: ProductViewModel = viewModel(
+        factory = ProductViewModelFactory(application)
+    )
     NavHost(
         navController = navController,
         startDestination = "home"
@@ -25,13 +35,14 @@ fun BottomAppBarNavigation() {
         }
         composable("search") {
             SearchScreen(
-                lambdaBack = {navController.navigate("home")},
+                lambdaBack = {navController.popBackStack()},
 //                lambdaSearch = {
 //                    TODO("Добавить экран с поиском средств")
 //                },
                 lambdaHome = {navController.navigate("home")},
                 lambdaAnalytic = {navController.navigate("analytic")},
-                lambdaSettings = {}
+                lambdaSettings = {},
+                productViewModel = viewModel
             )
 
         }
@@ -39,7 +50,7 @@ fun BottomAppBarNavigation() {
             AnalyticsScreen(
                 lambdaHome = {navController.navigate("home")},
                 lambdaSearch = {navController.navigate("search")},
-                lambdaSettings = {}
+                lambdaSettings = {},
             )
         }
     }
