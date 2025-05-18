@@ -79,7 +79,7 @@ fun RoutineList(
                             .padding(8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        ImageAlertDialog(product)
+                        ImageAlertDialog(product, height = 150)
                         Text(
                             text = product.name,
                             fontSize = 16.sp,
@@ -111,7 +111,8 @@ fun RoutineList(
     if (showDialog && selectedProduct != null) {
         CustomAlertDialog(
             product = selectedProduct!!,
-            onBack = onBack
+            saveProduct = { productViewModel.saveProduct(selectedProduct!!)},
+            showDialog = {showDialog = false}
         )
     }
 }

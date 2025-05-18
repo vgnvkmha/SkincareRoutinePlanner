@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -28,7 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skincareroutineplanner.data.Product
-import com.example.skincareroutineplanner.ui.theme.OnBackground
+import com.example.skincareroutineplanner.ui.theme.OnPrimaryContainer
+import com.example.skincareroutineplanner.ui.theme.OnSecondaryContainer
 import com.example.skincareroutineplanner.ui.theme.OnSurface
 import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 
@@ -37,10 +37,11 @@ import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 @Composable
 fun CustomAlertDialog(
     product: Product,
-    onBack: () -> Unit
+    showDialog: () -> Unit,
+    saveProduct: (Product) -> Unit
 ) {
     BasicAlertDialog(
-        onDismissRequest = {  }
+        onDismissRequest = showDialog
     ) {
         Surface(
             shape = RoundedCornerShape(16.dp),
@@ -48,23 +49,24 @@ fun CustomAlertDialog(
             color = com.example.skincareroutineplanner.ui.theme.Surface,
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
+                .height(520.dp)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(470.dp)
-                    .padding(8.dp)
+                    .height(500.dp)
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = product.name,
                     fontSize = 20.sp,
                     fontFamily = mainFontFamily, fontWeight = FontWeight.Black,
-                    color = OnSurface,
+                    color = OnSecondaryContainer,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                 )
-                ImageAlertDialog(product) //Изображение по url
-                Text(text = product.ingredients.joinToString(" "),
+                ImageAlertDialog(product, height = 280) //Изображение по url
+                Text(text = product.ingredients.take(5).joinToString(" ") + "...",
                     fontSize = 16.sp,
                     fontFamily = mainFontFamily,
                     fontWeight = FontWeight.Black,
@@ -76,16 +78,17 @@ fun CustomAlertDialog(
                     .background(com.example.skincareroutineplanner.ui.theme.Surface)
                 , horizontalArrangement = Arrangement.spacedBy(20.dp)) {
                     IconButton(
-                        onClick = { TODO("Добавить добавление элемента") }
+                        onClick = {saveProduct(product) }
                     ) {
                         Icon(Icons.Default.Add,
                             contentDescription = "добавить средство"
-                        ,tint = OnSurface)
+                        ,tint = OnPrimaryContainer)
                     }
                     Text(text = "Добавить в свою рутину",
-                        fontSize = 24.sp,
+                        fontSize = 20.sp,
                         fontFamily = mainFontFamily,
-                        fontWeight = FontWeight.Black)
+                        fontWeight = FontWeight.Black,
+                        color = OnSurface)
                 }
             }
         }

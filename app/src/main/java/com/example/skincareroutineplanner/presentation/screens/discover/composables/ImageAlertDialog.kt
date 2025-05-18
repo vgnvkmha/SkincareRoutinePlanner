@@ -2,7 +2,8 @@ package com.example.skincareroutineplanner.presentation.screens.discover.composa
 
 
 
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,13 +15,15 @@ import com.example.skincareroutineplanner.data.Product
 
 @Composable
 fun ImageAlertDialog(
-    product: Product
+    product: Product,
+    height: Int
 ) {
     AsyncImage(
         model = product.photo_url,
         contentDescription = "Изображения средства ${product.name}",
         modifier = Modifier
-            .size(128.dp)
+            .fillMaxWidth()
+            .height(height.dp)
             .clip(RoundedCornerShape(8.dp)),
         contentScale = ContentScale.Crop
     )

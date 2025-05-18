@@ -9,7 +9,7 @@ import androidx.room.Query
 
 @Dao
 interface MyDao {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addProduct(product: Product)
 
     @Query("SELECT * FROM myProducts ORDER BY id ASC")
