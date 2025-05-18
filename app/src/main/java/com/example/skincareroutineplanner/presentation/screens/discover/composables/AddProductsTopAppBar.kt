@@ -3,6 +3,7 @@
 package com.example.skincareroutineplanner.presentation.screens.discover.composables
 
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,16 +43,16 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AddScreenTopAppBar(
-    lambdaBack: () -> Unit,
+    lambdaBack: () -> Unit, //лямбда возвращения к предыдущему экрану в стэк трейсе
     viewModel: ProductViewModel
 ) {
-    val context = LocalContext.current
+    val context = LocalContext.current //текущий контекст для вызыва lifecycleScope
     val activity = context as? ComponentActivity
-    var isSearching by remember { mutableStateOf(false) }
+    val isSearching by viewModel.isSearching
     var searchText by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
-    val products by viewModel.products
+//    val products by viewModel.products
     TopAppBar(
         colors = TopAppBarColors(
             containerColor = PrimaryContainer,
@@ -61,55 +62,36 @@ fun AddScreenTopAppBar(
             navigationIconContentColor = OnPrimaryContainer
         ),
         title = {
-            if (isSearching) {
-                TextField(
-                    value = searchText,
-                    onValueChange = { searchText = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester),
-                    singleLine = true,
-                    placeholder = { Text("Введите название") },
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                            if (searchText.isNotBlank()) {
-                                TODO("добавить логику работу этой функции")
-//                                activity?.lifecycleScope?.launch {
-//                                    try {
-//                                        viewModel.fetchProducts(searchText)
-//
-//                                    }
-//                                    catch (e:Exception) {
-//
-//                                    }
-//
-//                                }
-                            }
-                            else {
-                                Toast.makeText(context, "Введите название средства",
-                                    Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    )
+            //если пользователь открыл клавиатуру для поиска
+            TextField(
+                value = searchText,
+                onValueChange = { searchText = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
+                singleLine = true,
+                placeholder = { Text("Введите название") },
+                keyboardActions = KeyboardActions(
+                    onDone = { //Когда пользователь скрыл клавиатуру
+                        keyboardController?.hide()
+
+//                            else {
+//                                Toast.makeText(context, "Введите название средства",
+//                                    Toast.LENGTH_LONG).show()
+//                            }
+                    }
                 )
-                LaunchedEffect(Unit) {
-                    focusRequester.requestFocus()
-                    keyboardController?.show()
-                }
-            } else {
-                Text(
-                    text = "Найти средство",
-                    modifier = Modifier.padding(16.dp),
-                    fontFamily = mainFontFamily,
-                    fontWeight = FontWeight.Black
-                )
+            )
+            LaunchedEffect(Unit) {
+                focusRequester.requestFocus()
+                keyboardController?.show()
             }
+
         },
-        navigationIcon = {
+        navigationIcon = {  //Кнопка возвращение на предыдущий экран
             IconButton(onClick = {
                 if (isSearching) {
-                    isSearching = false
+                    viewModel.clearSearch()
                     searchText = ""
                     keyboardController?.hide()
                 } else {
@@ -122,9 +104,15 @@ fun AddScreenTopAppBar(
                 )
             }
         },
-        actions = {
+        actions = { //Кнопка поиска
             IconButton(onClick = {
-                isSearching = true
+                if (searchText.isNotBlank()) {
+                    viewModel.startSearch() //Начинаем поиск, чтобы поле isSearching = true
+                    activity?.lifecycleScope?.launch {
+                        viewModel.fetchProducts(searchText)
+                    }
+                }
+
             }) {
                 Icon(
                     imageVector = Icons.Default.Search,
