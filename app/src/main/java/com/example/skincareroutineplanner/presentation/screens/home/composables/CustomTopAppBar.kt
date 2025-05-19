@@ -21,6 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
@@ -36,11 +40,14 @@ import androidx.compose.ui.unit.sp
 import com.example.skincareroutineplanner.R
 import com.example.skincareroutineplanner.ui.theme.*
 
-@Preview(showBackground = true)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBar(
+    streakCount: Int,
+    streakCountBest: Int
 ) {
+    var showDialog by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .shadow(
@@ -62,8 +69,11 @@ fun CustomTopAppBar(
             title = { Text(text = "Skincare Routine Planner", modifier = Modifier.padding(15.dp), style = MaterialTheme.typography.titleLarge.copy(
                 color = OnPrimaryContainer
             )) },
+            //кнопка серии
             navigationIcon = {IconButton(enabled = true,
-                onClick = { TODO("Добавить развертвывание информации о streak (что-то типа fragment)") }) {
+                onClick = {
+                    showDialog = true
+                }) {
                 Icon(painter = painterResource(id = R.drawable.streak_icon_),
                     contentDescription = "streak icon",
                     modifier = Modifier
@@ -81,7 +91,7 @@ fun CustomTopAppBar(
                     tint = Color.Unspecified //убираем стандартную заливку иконки
                 )
                 Text(
-                    text = "0",
+                    text = streakCount.toString(),
                     color = Color.White,
                     fontSize = 5.sp,
                     modifier = Modifier
@@ -100,6 +110,14 @@ fun CustomTopAppBar(
                     Icon(Icons.Default.DateRange, contentDescription = "calendar icon")
                 }
             }
+        )
+    }
+
+    if (showDialog) {
+        StreakAlertDialog(
+            showDialog = { showDialog = false},
+            streakCount = streakCount,
+            streakCountBest = streakCountBest
         )
     }
     

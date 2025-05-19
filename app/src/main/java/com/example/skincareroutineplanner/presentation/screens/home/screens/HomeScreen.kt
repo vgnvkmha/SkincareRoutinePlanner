@@ -1,11 +1,9 @@
 package com.example.skincareroutineplanner.presentation.screens.home.screens
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.skincareroutineplanner.presentation.screens.home.composables.CustomBottomAppBar
 import com.example.skincareroutineplanner.presentation.screens.home.composables.CustomTopAppBar
 import com.example.skincareroutineplanner.presentation.screens.home.composables.ScheduleList
@@ -19,9 +17,15 @@ fun HomeScreen(
     lambdaAnalytics: () -> Unit,
     lambdaSettings: () -> Unit
 ) {
+    //TODO добавить логику получения streakCount, streakCountBest
+    val streakCount = 0
+    val streakCountBest = 0
     Column(
         modifier = Modifier.fillMaxSize()) {
-        CustomTopAppBar()
+        CustomTopAppBar(
+            streakCount,
+            streakCountBest
+        )
         ScheduleList()
         CustomBottomAppBar(
             lambdaHome,
