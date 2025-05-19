@@ -1,10 +1,8 @@
 package com.example.skincareroutineplanner.presentation.screens.discover.composables
 
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skincareroutineplanner.data.Product
 import com.example.skincareroutineplanner.data.ProductViewModel
-import com.example.skincareroutineplanner.ui.theme.Background
 import com.example.skincareroutineplanner.ui.theme.Surface
 import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 
