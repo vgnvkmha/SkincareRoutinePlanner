@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -49,6 +50,8 @@ import com.example.skincareroutineplanner.ui.theme.Error
 import com.example.skincareroutineplanner.ui.theme.OnPrimary
 import com.example.skincareroutineplanner.ui.theme.OnPrimaryContainer
 import com.example.skincareroutineplanner.ui.theme.OnSurface
+import com.example.skincareroutineplanner.ui.theme.Outline
+import com.example.skincareroutineplanner.ui.theme.OutlineDark
 import com.example.skincareroutineplanner.ui.theme.PrimaryContainer
 import com.example.skincareroutineplanner.ui.theme.PrimaryDark
 import com.example.skincareroutineplanner.ui.theme.Surface
@@ -160,7 +163,6 @@ fun ScheduleList(
 
 
         // Список средств ухода (LazyColumn с ограниченной высотой под 6 карточек)
-        val itemHeight = 68.dp
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -169,11 +171,12 @@ fun ScheduleList(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(selectedProducts) { product ->
+                val isUsed = productViewModel.isProductUsed(product.id)
                 Card(
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // тень
                     colors = CardDefaults.cardColors(
-                        containerColor = Background // фон карточки
+                        containerColor = if (isUsed) Outline  else  Background// фон карточки
                     )
                 ) {
                     Row(
@@ -193,10 +196,16 @@ fun ScheduleList(
                             modifier = Modifier.weight(0.9f)
                         )
                         IconButton(
-                            onClick = { /* TODO: логика отметки средства */ },
+                            onClick = {
+                                if (productViewModel.isProductUsed(product.id)) {
+                                    productViewModel.unmarkProductsAsUsed(product.id)
+                                } else {
+                                    productViewModel.markProductsAsUsed(product.id)
+                                }
+                            /* TODO: логика отметки средства */ },
                             modifier = Modifier
                                 .size(36.dp)
-                                .background(PrimaryContainer, CircleShape) // круглая кнопка
+                                .background(if (isUsed) Outline  else  PrimaryContainer, CircleShape) // круглая кнопка
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.done),

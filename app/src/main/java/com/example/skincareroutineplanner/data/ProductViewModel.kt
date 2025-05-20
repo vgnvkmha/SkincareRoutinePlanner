@@ -23,7 +23,10 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     private val _isSearching = mutableStateOf(false)    //ViewModel может изменять значение
     val isSearching: State<Boolean> = _isSearching            //UI может только читать значение
 
-    private val ip = "172.20.10.8"
+    private val _usedProductsIds = mutableStateListOf<Int>()
+    val usedProductsIds: List<Int>  = _usedProductsIds
+
+//    private val ip = "172.20.10.8"
     private val localIP = "10.0.2.2"
 
     fun fetchProducts(searchText: String) {                    //метод поиска всех средств по названию
@@ -65,6 +68,19 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun markProductsAsUsed(id: Int) {
+        if (id !in _usedProductsIds) {
+            _usedProductsIds.add(id)
+        }
+    }
+
+    fun unmarkProductsAsUsed(id: Int) {
+        _usedProductsIds.remove(id)
+    }
+
+    fun isProductUsed(id: Int): Boolean {
+        return id in usedProductsIds
+    }
     fun deleteProduct(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteProductById(id)

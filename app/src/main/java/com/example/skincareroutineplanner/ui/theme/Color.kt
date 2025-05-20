@@ -60,7 +60,7 @@ val SurfaceDark = Color(0xFF1E1E1E)
 val OnSurfaceDark = Color(0xFFDCE5DC)
 
 // Outline (for borders, disabled states)
-val Outline = Color(0xFF8A8D8B)
+val Outline = Color(0xFFADACAC)
 val OutlineDark = Color(0xFF5A5A5A)
 
 // Error
