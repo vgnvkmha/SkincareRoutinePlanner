@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.ktor.client.call.body
@@ -58,7 +57,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     fun getAllProducts() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val products = repository.getAllProducts().value ?: emptyList()
+                val products = repository.getAllProducts()
                 _userProducts.value = products
             } catch (e: Exception) {
                 Log.e("ProductViewModel", "Ошибка при получении продуктов", e)

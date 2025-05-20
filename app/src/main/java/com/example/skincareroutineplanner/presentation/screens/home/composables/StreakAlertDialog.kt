@@ -30,7 +30,7 @@ fun StreakAlertDialog(
             color = com.example.skincareroutineplanner.ui.theme.Surface,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp)
+                .height(350.dp)
 
         ) {
             Column(

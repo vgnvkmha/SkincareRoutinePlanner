@@ -1,6 +1,7 @@
 package com.example.skincareroutineplanner.presentation.screens.home.composables
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +41,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.skincareroutineplanner.R
+import com.example.skincareroutineplanner.data.Product
+import com.example.skincareroutineplanner.data.ProductViewModel
+import com.example.skincareroutineplanner.presentation.screens.discover.composables.ImageAlertDialog
 import com.example.skincareroutineplanner.ui.theme.Background
 import com.example.skincareroutineplanner.ui.theme.Error
 import com.example.skincareroutineplanner.ui.theme.OnPrimary
@@ -51,16 +56,35 @@ import com.example.skincareroutineplanner.ui.theme.mainFontFamily
 import java.time.LocalDate
 
 @SuppressLint("AutoboxingStateCreation") // подавляем предупреждение о состоянии Int
-@Preview(showBackground = true)
 @Composable
-fun ScheduleList() {
-    val components =
-        listOf("Тоник", "Сыворотка", "Крем", "Солнцезащитное средство", "AAAAAA", "AAAAAA")
-    val daysOfWeek = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
-    val currentDayIndex = LocalDate.now().dayOfWeek.value % 7
+fun ScheduleList(
+    productViewModel: ProductViewModel,
+) {
+
+    LaunchedEffect(Unit) {
+        productViewModel.getAllProducts()
+    }
+
+    val allProducts: List<Product> = productViewModel.userProducts.value
+
+    LaunchedEffect(allProducts) {
+        allProducts.forEach {
+            Log.d("DEBUG", "Product: ${it.name}, Time: ${it.recommendedTime}")
+        }
+    }
 
     // Состояние выбранной рутины: "Утро" или "Вечер"
     var selectedRoutine by remember { mutableStateOf("Утро") }
+
+    val selectedProducts by remember(allProducts, selectedRoutine) {
+        mutableStateOf(
+            allProducts.filter { it.recommendedTime.contains(selectedRoutine) }
+        )
+    }
+
+    val daysOfWeek = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
+    val currentDayIndex = LocalDate.now().dayOfWeek.value % 7
+
 
     // Состояние выбранного дня недели (0..6)
     var selectedDayIndex by remember { mutableIntStateOf(currentDayIndex) }
@@ -140,11 +164,11 @@ fun ScheduleList() {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(itemHeight * 6.2f) // ровно 6 карточек + немного на отступы
+                .weight(1f) //займет все доступное место
                 .background(Surface),  // задний фон для разделения карточек
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(components) { component ->
+            items(selectedProducts) { product ->
                 Card(
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // тень
@@ -159,15 +183,17 @@ fun ScheduleList() {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+//                        ImageAlertDialog(product, height = 68)
                         Text(
-                            text = component,
+                            text = product.name,
                             style = MaterialTheme.typography.bodyLarge,
                             fontFamily = mainFontFamily,
                             fontWeight = FontWeight.Black,
-                            color = OnSurface
+                            color = OnSurface,
+                            modifier = Modifier.weight(0.9f)
                         )
                         IconButton(
-                            onClick = { /* TODO: логика отметки средства */},
+                            onClick = { /* TODO: логика отметки средства */ },
                             modifier = Modifier
                                 .size(36.dp)
                                 .background(PrimaryContainer, CircleShape) // круглая кнопка

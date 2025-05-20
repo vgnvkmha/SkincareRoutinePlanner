@@ -31,7 +31,8 @@ fun BottomAppBarNavigation() {
             HomeScreen(lambdaHome = {}, //Оставляем лямбду пустой, так как экран один и тот же
                 lambdaSearch = { navController.navigate("search") },
                 lambdaAnalytics = {navController.navigate("analytic")},
-                lambdaSettings = {  })
+                lambdaSettings = {  },
+                productViewModel = viewModel)
         }
         composable("search") {
             SearchScreen(

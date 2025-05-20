@@ -55,7 +55,7 @@ fun CustomSteakFragment(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(400.dp)
+            .height(350.dp)
             .background(Background)
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -66,11 +66,12 @@ fun CustomSteakFragment(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
-                .background(Background)
+                .background(Background),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
                 enabled = true,
-                onClick = showDialog
+                onClick = showDialog,
             ) {
                 Icon(Icons.Default.Close, contentDescription = "To close fragment")
             }
@@ -94,7 +95,7 @@ fun CustomSteakFragment(
         Row(modifier = Modifier.fillMaxWidth()) {
             Box(
                 modifier = Modifier
-                    .width(200.dp)
+                    .width(150.dp)
                     .height(140.dp)
                     .background(Background)
             ) {
@@ -116,7 +117,6 @@ fun CustomSteakFragment(
                 )
                 Text(
                     text = "$streakCount дней",
-                    textAlign = TextAlign.Center,
                     fontFamily = mainFontFamily,
                     fontWeight = FontWeight.Black,
                     color = OnBackground,

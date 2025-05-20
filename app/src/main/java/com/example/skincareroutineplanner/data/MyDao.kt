@@ -13,7 +13,7 @@ interface MyDao {
     suspend fun addProduct(product: Product)
 
     @Query("SELECT * FROM myProducts ORDER BY id ASC")
-    fun getAllProducts(): LiveData<List<Product>>
+    fun getAllProducts(): List<Product>
 
     @Query("SELECT * FROM myProducts WHERE id=:id LIMIT 1")
     suspend fun getProductById(id:Int) : Product?

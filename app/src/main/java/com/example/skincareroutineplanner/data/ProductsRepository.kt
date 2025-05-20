@@ -1,11 +1,14 @@
 package com.example.skincareroutineplanner.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 
 class ProductsRepository(private val dao: MyDao) {
     // Получение всех продуктов
-    fun getAllProducts(): LiveData<List<Product>> {
-        return dao.getAllProducts()
+    suspend fun getAllProducts(): List<Product> {
+        val data = dao.getAllProducts()
+        Log.d("Repo", "Loaded from DB: ${data.size}")
+        return data
     }
     // Получение одного продукта по ID
     suspend fun getProductById(id: Int): Product? {
