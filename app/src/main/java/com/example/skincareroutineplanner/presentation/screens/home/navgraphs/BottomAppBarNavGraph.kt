@@ -12,7 +12,8 @@ import com.example.skincareroutineplanner.data.ProductViewModelFactory
 import com.example.skincareroutineplanner.presentation.screens.home.screens.AnalyticsScreen
 import com.example.skincareroutineplanner.presentation.screens.home.screens.HomeScreen
 import com.example.skincareroutineplanner.presentation.screens.home.screens.SearchScreen
-
+import com.example.skincareroutineplanner.presentation.screens.home.screens.SettingsScreen
+import com.example.skincareroutineplanner.presentation.screens.settings.composables.PersonSettings
 
 
 @Composable
@@ -31,7 +32,7 @@ fun BottomAppBarNavigation() {
             HomeScreen(lambdaHome = {}, //Оставляем лямбду пустой, так как экран один и тот же
                 lambdaSearch = { navController.navigate("search") },
                 lambdaAnalytics = {navController.navigate("analytic")},
-                lambdaSettings = {  },
+                lambdaSettings = {navController.navigate("settings")},
                 productViewModel = viewModel,
                 context = context)
         }
@@ -43,7 +44,7 @@ fun BottomAppBarNavigation() {
 //                },
                 lambdaHome = {navController.navigate("home")},
                 lambdaAnalytic = {navController.navigate("analytic")},
-                lambdaSettings = {},
+                lambdaSettings = {navController.navigate("settings")},
                 productViewModel = viewModel
             )
 
@@ -52,7 +53,23 @@ fun BottomAppBarNavigation() {
             AnalyticsScreen(
                 lambdaHome = {navController.navigate("home")},
                 lambdaSearch = {navController.navigate("search")},
-                lambdaSettings = {},
+                lambdaSettings = {navController.navigate("settings")}
+            )
+        }
+        composable("settings") {
+            SettingsScreen(
+                lambdaProducts = {},
+                lambdaSettings = {navController.navigate("userSettings")},
+                lambdaAbout = {},
+                lambdaLogOut = {},
+                lambdaHome = {navController.navigate("home")},
+                lambdaSearch = {navController.navigate("search")},
+                lambdaAnalytic = {navController.navigate("analytic")}
+            )
+        }
+        composable("userSettings") {
+            PersonSettings(
+                onBackClick = {navController.popBackStack()}
             )
         }
     }
