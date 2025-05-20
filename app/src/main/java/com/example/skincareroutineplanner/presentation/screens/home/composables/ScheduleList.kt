@@ -1,6 +1,7 @@
 package com.example.skincareroutineplanner.presentation.screens.home.composables
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -62,6 +63,7 @@ import java.time.LocalDate
 @Composable
 fun ScheduleList(
     productViewModel: ProductViewModel,
+    context: Context
 ) {
 
     LaunchedEffect(Unit) {
@@ -69,12 +71,6 @@ fun ScheduleList(
     }
 
     val allProducts: List<Product> = productViewModel.userProducts.value
-
-    LaunchedEffect(allProducts) {
-        allProducts.forEach {
-            Log.d("DEBUG", "Product: ${it.name}, Time: ${it.recommendedTime}")
-        }
-    }
 
     // Состояние выбранной рутины: "Утро" или "Вечер"
     var selectedRoutine by remember { mutableStateOf("Утро") }
@@ -196,9 +192,9 @@ fun ScheduleList(
                         IconButton(
                             onClick = {
                                 if (isUsed) {
-                                    productViewModel.unmarkProductsAsUsed(product.id, selectedRoutine, selectedDayIndex)
+                                    productViewModel.unmarkProductsAsUsed(product.id, selectedRoutine, selectedDayIndex,  context )
                                 } else {
-                                    productViewModel.markProductsAsUsed(product.id, selectedRoutine, selectedDayIndex)
+                                    productViewModel.markProductsAsUsed(product.id, selectedRoutine, selectedDayIndex, context)
                                 }
                             /* TODO: логика отметки средства */ },
                             modifier = Modifier

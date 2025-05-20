@@ -1,5 +1,6 @@
 package com.example.skincareroutineplanner.presentation.screens.home.screens
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -17,7 +18,8 @@ fun HomeScreen(
     lambdaSearch: () -> Unit,
     lambdaAnalytics: () -> Unit,
     lambdaSettings: () -> Unit,
-    productViewModel: ProductViewModel
+    productViewModel: ProductViewModel,
+    context: Context
 ) {
     //TODO добавить логику получения streakCount, streakCountBest
     val streakCount = 0
@@ -28,7 +30,7 @@ fun HomeScreen(
             streakCount,
             streakCountBest
         )
-        ScheduleList(productViewModel)
+        ScheduleList(productViewModel, context)
         CustomBottomAppBar(
             lambdaHome,
             lambdaSearch,

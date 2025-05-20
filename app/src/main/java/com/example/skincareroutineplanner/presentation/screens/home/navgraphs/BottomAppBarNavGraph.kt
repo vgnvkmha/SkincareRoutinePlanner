@@ -21,7 +21,7 @@ fun BottomAppBarNavigation() {
     val context = LocalContext.current
     val application = context.applicationContext as Application
     val viewModel: ProductViewModel = viewModel(
-        factory = ProductViewModelFactory(application)
+        factory = ProductViewModelFactory(application, context)
     )
     NavHost(
         navController = navController,
@@ -32,7 +32,8 @@ fun BottomAppBarNavigation() {
                 lambdaSearch = { navController.navigate("search") },
                 lambdaAnalytics = {navController.navigate("analytic")},
                 lambdaSettings = {  },
-                productViewModel = viewModel)
+                productViewModel = viewModel,
+                context = context)
         }
         composable("search") {
             SearchScreen(

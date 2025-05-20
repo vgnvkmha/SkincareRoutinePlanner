@@ -58,6 +58,7 @@ android {
 
 dependencies {
     kapt(libs.androidx.room.compiler)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.navigation:navigation-compose:2.9.0")
     implementation(libs.coil.compose)
     implementation(libs.androidx.fragment)

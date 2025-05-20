@@ -1,17 +1,21 @@
 package com.example.skincareroutineplanner.data
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.runtime.mutableStateOf
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-class ProductViewModel(application: Application) : AndroidViewModel(application) {
+class ProductViewModel(application: Application, context: Context) : AndroidViewModel(application) {
     private val repository: ProductsRepository
 
     private val _searchProducts = mutableStateOf<List<Product>>(emptyList())    //список средст, которые сейчас ищет пользователь
@@ -51,6 +55,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     init {  //инициализация полей, отвечающих за дао и репозиторий
         val productDao = ProductsDatabase.getDatabase(application).myDao()
         repository = ProductsRepository(productDao)
+        loadUsedProductsMap(context = context)
     }
     fun saveProduct(product: Product) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -68,19 +73,22 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun markProductsAsUsed(productId: Int, routine: String, dayIndex: Int) {
+    fun markProductsAsUsed(productId: Int, routine: String, dayIndex: Int, context: Context) {
         val key = dayIndex to routine
         val currentSet = _usedProductsMap[key]?.toMutableSet() ?: mutableSetOf()
         currentSet.add(productId)
         _usedProductsMap[key] = currentSet
+        viewModelScope.launch { saveUsedProductsMap(context = context) }
     }
 
-    fun unmarkProductsAsUsed(productId: Int, routine: String, dayIndex: Int) {
+    fun unmarkProductsAsUsed(productId: Int, routine: String, dayIndex: Int, context: Context) {
         val key = dayIndex to routine
         val current = _usedProductsMap[key]?.toMutableSet() ?: return
         current.remove(productId)
         _usedProductsMap[key] = current // ← опять пересохраняем, чтобы вызвать recomposition
+        viewModelScope.launch { saveUsedProductsMap(context) }
     }
+
 
     fun isProductUsed(productId: Int, routine: String, dayIndex: Int): Boolean {
         return _usedProductsMap[dayIndex to routine]?.contains(productId) == true
@@ -89,6 +97,36 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     fun deleteProduct(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteProductById(id)
+        }
+    }
+
+    suspend fun saveUsedProductsMap(context: Context) {
+        context.dataStore.edit { preferences ->
+            usedProductsMap.forEach { (key, valueSet) ->
+                val keyString = "${key.first},${key.second}"
+                preferences[stringSetPreferencesKey(keyString)] = valueSet.map {
+                    it.toString()
+                }.toSet()
+            }
+        }
+    }
+
+    private fun loadUsedProductsMap(context: Context) {
+        viewModelScope.launch {
+            context.dataStore.data.firstOrNull()?.let { preferences ->
+                val restoredMap = mutableMapOf<Pair<Int, String>, Set<Int>>()
+                preferences.asMap().forEach { (prefKey, stringSet) ->
+                    val keyParts = prefKey.name.split(",") // ← ты сохраняешь через запятую, не "_"
+                    if (keyParts.size == 2 && stringSet is Set<*>) {
+                        val day = keyParts[0].toIntOrNull() ?: return@forEach
+                        val time = keyParts[1]
+                        val productIds = (stringSet as Set<String>).mapNotNull { it.toIntOrNull() }.toSet()
+                        restoredMap[day to time] = productIds
+                    }
+                }
+                _usedProductsMap.clear()
+                _usedProductsMap.putAll(restoredMap) // ← обновляем stateMap напрямую
+            }
         }
     }
 
