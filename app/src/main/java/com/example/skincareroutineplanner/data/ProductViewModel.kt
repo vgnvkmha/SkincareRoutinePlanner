@@ -23,8 +23,8 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     private val _isSearching = mutableStateOf(false)    //ViewModel может изменять значение
     val isSearching: State<Boolean> = _isSearching            //UI может только читать значение
 
-    private val _usedProductsIds = mutableStateListOf<Int>()
-    val usedProductsIds: List<Int>  = _usedProductsIds
+    private val _usedProductsMap =  mutableStateMapOf<Pair<Int, String>, Set<Int>>()
+    val usedProductsMap: Map<Pair<Int, String>, Set<Int>> get() = _usedProductsMap
 
 //    private val ip = "172.20.10.8"
     private val localIP = "10.0.2.2"
@@ -68,19 +68,24 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun markProductsAsUsed(id: Int) {
-        if (id !in _usedProductsIds) {
-            _usedProductsIds.add(id)
-        }
+    fun markProductsAsUsed(productId: Int, routine: String, dayIndex: Int) {
+        val key = dayIndex to routine
+        val currentSet = _usedProductsMap[key]?.toMutableSet() ?: mutableSetOf()
+        currentSet.add(productId)
+        _usedProductsMap[key] = currentSet
     }
 
-    fun unmarkProductsAsUsed(id: Int) {
-        _usedProductsIds.remove(id)
+    fun unmarkProductsAsUsed(productId: Int, routine: String, dayIndex: Int) {
+        val key = dayIndex to routine
+        val current = _usedProductsMap[key]?.toMutableSet() ?: return
+        current.remove(productId)
+        _usedProductsMap[key] = current // ← опять пересохраняем, чтобы вызвать recomposition
     }
 
-    fun isProductUsed(id: Int): Boolean {
-        return id in usedProductsIds
+    fun isProductUsed(productId: Int, routine: String, dayIndex: Int): Boolean {
+        return _usedProductsMap[dayIndex to routine]?.contains(productId) == true
     }
+
     fun deleteProduct(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteProductById(id)

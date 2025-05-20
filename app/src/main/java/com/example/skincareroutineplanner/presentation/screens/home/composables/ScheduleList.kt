@@ -79,11 +79,8 @@ fun ScheduleList(
     // Состояние выбранной рутины: "Утро" или "Вечер"
     var selectedRoutine by remember { mutableStateOf("Утро") }
 
-    val selectedProducts by remember(allProducts, selectedRoutine) {
-        mutableStateOf(
-            allProducts.filter { it.recommendedTime.contains(selectedRoutine) }
-        )
-    }
+    val selectedProducts = allProducts.filter { it.recommendedTime.contains(selectedRoutine) }
+    val usedProductsMap = productViewModel.usedProductsMap
 
     val daysOfWeek = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
     val currentDayIndex = LocalDate.now().dayOfWeek.value % 7
@@ -170,8 +167,9 @@ fun ScheduleList(
                 .background(Surface),  // задний фон для разделения карточек
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(selectedProducts) { product ->
-                val isUsed = productViewModel.isProductUsed(product.id)
+            items(selectedProducts, key = { product -> product.id  to selectedDayIndex to selectedRoutine}) { product ->
+                val isUsed = usedProductsMap[selectedDayIndex to selectedRoutine]?.contains(product.id) == true
+                Log.d("RECOMPOSITION", "AAAAAAAAAAAA")
                 Card(
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // тень
@@ -197,10 +195,10 @@ fun ScheduleList(
                         )
                         IconButton(
                             onClick = {
-                                if (productViewModel.isProductUsed(product.id)) {
-                                    productViewModel.unmarkProductsAsUsed(product.id)
+                                if (isUsed) {
+                                    productViewModel.unmarkProductsAsUsed(product.id, selectedRoutine, selectedDayIndex)
                                 } else {
-                                    productViewModel.markProductsAsUsed(product.id)
+                                    productViewModel.markProductsAsUsed(product.id, selectedRoutine, selectedDayIndex)
                                 }
                             /* TODO: логика отметки средства */ },
                             modifier = Modifier
