@@ -9,6 +9,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.skincareroutineplanner.presentation.screens.analytics.data.UsageRepository
+import com.example.skincareroutineplanner.presentation.screens.analytics.data.UsageStats
 import com.example.skincareroutineplanner.presentation.screens.settings.composables.SelectedOptions
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -33,6 +35,17 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
 
     private val _personalInfo = mutableStateOf<SelectedOptions>(SelectedOptions("", "", "", "", ""))
     val personalInfo: State<SelectedOptions> = _personalInfo
+
+    private val _usageStats = mutableStateOf(
+        UsageStats(
+            lastWeek = emptyMap(),
+            last2Weeks = emptyMap(),
+            lastMonth = emptyMap()
+        )
+    )
+    val usageStats: State<UsageStats> = _usageStats
+
+    private val _usageRepo = UsageRepository(ProductsDatabase.getDatabase(application).myDao())
 
 //    private val ip = "172.20.10.8"
     private val localIP = "10.0.2.2"
@@ -75,6 +88,27 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
                 Log.e("ProductViewModel", "Ошибка при получении продуктов", e)
             }
         }
+    }
+
+    fun markProductUsedAnalytic(productId: Int) = viewModelScope.launch {
+        _usageRepo.logUsage(productId)
+    }
+
+    fun loadUsageStats() = viewModelScope.launch(Dispatchers.IO) {
+        val now = System.currentTimeMillis()
+        val weekAgo = now - 7L * 24 * 60 * 60 * 1000
+        val twoWeeksAgo = now - 14L * 24 * 60 * 60 * 1000
+        val monthAgo = now - 30L * 24 * 60 * 60 * 1000
+
+        val lastWeek = _usageRepo.getUsageCounts(weekAgo)
+        val last2Weeks = _usageRepo.getUsageCounts(twoWeeksAgo)
+        val lastMonth = _usageRepo.getUsageCounts(monthAgo)
+
+        _usageStats.value = UsageStats(
+            lastWeek = lastWeek,
+            last2Weeks = last2Weeks,
+            lastMonth = lastMonth
+        )
     }
 
     fun markProductsAsUsed(productId: Int, routine: String, dayIndex: Int, context: Context) {

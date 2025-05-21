@@ -1,10 +1,11 @@
 package com.example.skincareroutineplanner.data
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.skincareroutineplanner.presentation.screens.analytics.data.UsageCount
+import com.example.skincareroutineplanner.presentation.screens.analytics.data.UsageEvent
 
 
 @Dao
@@ -23,4 +24,12 @@ interface MyDao {
 
     @Query("DELETE FROM myProducts WHERE id=:id")
     suspend fun deleteProductById(id: Int)
+
+    //для usage_table
+
+    @Insert
+    suspend fun insertUsageEvent(event: UsageEvent)
+
+    @Query("SELECT productId AS productId, COUNT(*) AS count FROM usage_events WHERE timestamp >= :since GROUP BY productId")
+    suspend fun getUsageCountsSince(since: Long) : List<UsageCount>
 }
