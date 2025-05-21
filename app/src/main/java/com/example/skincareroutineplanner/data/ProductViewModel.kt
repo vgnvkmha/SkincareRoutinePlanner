@@ -30,7 +30,11 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
     private val _isSearching = mutableStateOf(false)    //ViewModel может изменять значение
     val isSearching: State<Boolean> = _isSearching            //UI может только читать значение
 
+    /*закрытое поля MutableStateMapOf  ключ которого — пара (dayIndex, routineName),
+     а значение — Set ID продуктов, отмеченных в этот день/рутину.
+     */
     private val _usedProductsMap =  mutableStateMapOf<Pair<Int, String>, Set<Int>>()
+    //только для чтения извне
     val usedProductsMap: Map<Pair<Int, String>, Set<Int>> get() = _usedProductsMap
 
     private val _personalInfo = mutableStateOf<SelectedOptions>(SelectedOptions("", "", "", "", ""))
@@ -90,16 +94,20 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
         }
     }
 
+    //метод записи времени использования средства
     fun markProductUsedAnalytic(productId: Int) = viewModelScope.launch {
         _usageRepo.logUsage(productId)
     }
 
+    //метод для загрузки статистики за разные периоды
     fun loadUsageStats() = viewModelScope.launch(Dispatchers.IO) {
         val now = System.currentTimeMillis()
+        //заполняем текущее время в миллисекундах
         val weekAgo = now - 7L * 24 * 60 * 60 * 1000
         val twoWeeksAgo = now - 14L * 24 * 60 * 60 * 1000
         val monthAgo = now - 30L * 24 * 60 * 60 * 1000
 
+        //списки всех использованныз средств за определенные промежутки
         val lastWeek = _usageRepo.getUsageCounts(weekAgo)
         val last2Weeks = _usageRepo.getUsageCounts(twoWeeksAgo)
         val lastMonth = _usageRepo.getUsageCounts(monthAgo)
@@ -117,6 +125,7 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
         currentSet.add(productId)
         _usedProductsMap[key] = currentSet
         viewModelScope.launch { saveUsedProductsMap(context = context) }
+        markProductUsedAnalytic(productId)
     }
 
     fun unmarkProductsAsUsed(productId: Int, routine: String, dayIndex: Int, context: Context) {

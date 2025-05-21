@@ -53,7 +53,8 @@ fun BottomAppBarNavigation() {
             AnalyticsScreen(
                 lambdaHome = {navController.navigate("home")},
                 lambdaSearch = {navController.navigate("search")},
-                lambdaSettings = {navController.navigate("settings")}
+                lambdaSettings = {navController.navigate("settings")},
+                viewModel = viewModel
             )
         }
         composable("settings") {
