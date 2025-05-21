@@ -19,7 +19,7 @@ fun SettingsScreen(
     lambdaLogOut: () -> Unit,
     lambdaHome: () -> Unit,
     lambdaSearch: () -> Unit,
-    lambdaAnalytic: () -> Unit,
+    lambdaAnalytic: () -> Unit
 
 ) {
     Column(modifier = Modifier

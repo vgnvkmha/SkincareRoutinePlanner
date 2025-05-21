@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.skincareroutineplanner.presentation.screens.settings.composables.SelectedOptions
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,9 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
 
     private val _usedProductsMap =  mutableStateMapOf<Pair<Int, String>, Set<Int>>()
     val usedProductsMap: Map<Pair<Int, String>, Set<Int>> get() = _usedProductsMap
+
+    private val _personalInfo = mutableStateOf<SelectedOptions>(SelectedOptions("", "", "", "", ""))
+    val personalInfo: State<SelectedOptions> = _personalInfo
 
 //    private val ip = "172.20.10.8"
     private val localIP = "10.0.2.2"
@@ -87,6 +91,22 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
         current.remove(productId)
         _usedProductsMap[key] = current // ← опять пересохраняем, чтобы вызвать recomposition
         viewModelScope.launch { saveUsedProductsMap(context) }
+    }
+
+    fun updatePersonalInfo(
+        gender: String = _personalInfo.value.selectedGender,
+        age: String = _personalInfo.value.selectedAge,
+        skinType: String = _personalInfo.value.selectedSkinType,
+        climate: String = _personalInfo.value.selectedClimate,
+        sunExposure: String = _personalInfo.value.selectedSunExposure,
+    ) {
+        _personalInfo.value = SelectedOptions(
+            selectedGender = gender,
+            selectedAge = age,
+            selectedSkinType = skinType,
+            selectedClimate = climate,
+            selectedSunExposure = sunExposure
+        )
     }
 
 

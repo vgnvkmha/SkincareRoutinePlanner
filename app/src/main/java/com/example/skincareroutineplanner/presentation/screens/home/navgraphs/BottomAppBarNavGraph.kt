@@ -69,7 +69,9 @@ fun BottomAppBarNavigation() {
         }
         composable("userSettings") {
             PersonSettings(
-                onBackClick = {navController.popBackStack()}
+                onBackClick = {navController.popBackStack()},
+                productViewModel = viewModel,
+                context = context
             )
         }
     }

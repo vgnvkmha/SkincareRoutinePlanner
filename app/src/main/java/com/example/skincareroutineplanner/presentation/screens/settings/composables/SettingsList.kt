@@ -5,8 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skincareroutineplanner.ui.theme.Background
@@ -28,17 +27,20 @@ fun SettingsList(
     lambdaSettings: () -> Unit,
     lambdaAbout: () -> Unit,
     lambdaLogOut: () -> Unit,
+    lambdaCreateSchedule: () -> Unit = {}
 ) {
     val settingsItems = listOf(
         SettingItem("Мои средства", lambdaProducts),
         SettingItem("Мои данные", lambdaSettings),
         SettingItem("О приложении", lambdaAbout),
+        SettingItem("Создать расписание", lambdaCreateSchedule),
         SettingItem("Выход", lambdaLogOut)
     )
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .height(810.dp)
             .background(Background)
             .padding(horizontal = 16.dp, vertical = 24.dp)
     ) {
