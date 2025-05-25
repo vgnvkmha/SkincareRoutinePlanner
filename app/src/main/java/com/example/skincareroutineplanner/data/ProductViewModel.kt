@@ -68,7 +68,7 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
                     */
                 }
                 catch (e: Exception) {
-                    Log.e("Не получилось сделать запрос","AAAAAA")
+                    Log.e("Не получилось сделать запрос","Request is failed")
                 }
             }
         }

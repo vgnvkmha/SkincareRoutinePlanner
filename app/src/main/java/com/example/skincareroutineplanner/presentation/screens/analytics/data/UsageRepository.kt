@@ -12,7 +12,7 @@ class UsageRepository(private val dao: MyDao) {
         )
     }
 
-    //функция, которая возвращает статистику по количеству использований средства
+    //функция, которая возвращает количество использований средства начиная с since
     suspend fun getUsageCounts(since: Long) : Map<Int, Int> = //мапа productId -> count
         dao.getUsageCountsSince(since)
             .associate { it.productId to it.count } //превращает список DTO в Map<Int, Int>

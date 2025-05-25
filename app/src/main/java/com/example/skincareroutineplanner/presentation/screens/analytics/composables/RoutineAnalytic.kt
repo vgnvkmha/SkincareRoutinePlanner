@@ -132,7 +132,7 @@ private fun RoutineSection(
                     fontWeight = FontWeight.Black
                 )
                 Text(
-                    text = "Использовано раз: ${item.count}",
+                    text = "Кличество использований: ${item.count}",
                     color = if (item.count > item.threshold) Primary else Error
                 )
             }

@@ -61,7 +61,6 @@ fun BottomAppBarNavigation() {
             SettingsScreen(
                 lambdaProducts = {},
                 lambdaSettings = {navController.navigate("userSettings")},
-                lambdaAbout = {},
                 lambdaLogOut = {},
                 lambdaHome = {navController.navigate("home")},
                 lambdaSearch = {navController.navigate("search")},
