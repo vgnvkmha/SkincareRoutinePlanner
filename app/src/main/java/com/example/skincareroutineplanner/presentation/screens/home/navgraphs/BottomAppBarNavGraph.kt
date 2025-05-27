@@ -14,6 +14,7 @@ import com.example.skincareroutineplanner.presentation.screens.home.screens.Home
 import com.example.skincareroutineplanner.presentation.screens.home.screens.SearchScreen
 import com.example.skincareroutineplanner.presentation.screens.home.screens.SettingsScreen
 import com.example.skincareroutineplanner.presentation.screens.settings.composables.PersonSettings
+import java.time.LocalDate
 
 
 @Composable
@@ -64,12 +65,19 @@ fun BottomAppBarNavigation() {
                 lambdaLogOut = {},
                 lambdaHome = {navController.navigate("home")},
                 lambdaSearch = {navController.navigate("search")},
-                lambdaAnalytic = {navController.navigate("analytic")}
+                lambdaAnalytic = {navController.navigate("analytic")},
+                lambdaCreateSchedule = {
+                    viewModel.generateSchedule(viewModel.userProducts.value, LocalDate.now())
+                }
             )
         }
         composable("userSettings") {
             PersonSettings(
-                onBackClick = {navController.popBackStack()},
+                onBackClick = {
+//                    viewModel.updatePersonalInfo(
+//                        gender =
+//                    )
+                    navController.popBackStack()},
                 productViewModel = viewModel,
                 context = context
             )

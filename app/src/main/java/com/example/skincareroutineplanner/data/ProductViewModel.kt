@@ -9,6 +9,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.skincareroutineplanner.domain.schedule.Routine
+import com.example.skincareroutineplanner.domain.schedule.distributeOverWeek
 import com.example.skincareroutineplanner.presentation.screens.analytics.data.UsageRepository
 import com.example.skincareroutineplanner.presentation.screens.analytics.data.UsageStats
 import com.example.skincareroutineplanner.presentation.screens.settings.composables.SelectedOptions
@@ -17,6 +19,7 @@ import io.ktor.client.request.get
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class ProductViewModel(application: Application, context: Context) : AndroidViewModel(application) {
     private val repository: ProductsRepository
@@ -33,12 +36,51 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
     /*закрытое поля MutableStateMapOf  ключ которого — пара (dayIndex, routineName),
      а значение — Set ID продуктов, отмеченных в этот день/рутину.
      */
-    private val _usedProductsMap =  mutableStateMapOf<Pair<Int, String>, Set<Int>>()
+    private val _usedProductsMap =  mutableStateMapOf<Pair<LocalDate, String>, Set<Int>>()
     //только для чтения извне
-    val usedProductsMap: Map<Pair<Int, String>, Set<Int>> get() = _usedProductsMap
+    val usedProductsMap: Map<Pair<LocalDate, String>, Set<Int>> get() = _usedProductsMap
 
     private val _personalInfo = mutableStateOf<SelectedOptions>(SelectedOptions("", "", "", "", ""))
     val personalInfo: State<SelectedOptions> = _personalInfo
+
+    private val _schedule = mutableStateOf<List<Routine>>(emptyList())
+    val schedule: State<List<Routine>> = _schedule
+
+    fun generateSchedule(
+        products: List<Product>,
+        startDate: LocalDate = LocalDate.now()
+    ) {
+        val week = (0L until 7L).map { startDate.plusDays(it) }
+        products.forEach { p ->
+            Log.d("PRODUCT_DEBUG", "id=${p.id} name=${p.name} recommendedForSkinTypes=${p.recommendedForSkinTypes} recommendedTime=${p.recommendedTime}")
+        }
+        Log.d("SKIN_TYPE", "selectedSkinType= ${personalInfo.value.selectedSkinType}")
+        val suited = products.filter { p ->
+            (p.recommendedForSkinTypes.contains(personalInfo.value.selectedSkinType) ||
+                    p.recommendedForSkinTypes.contains("Все"))
+        }
+        Log.d("suited size","${suited.size}")
+
+        val morning = suited.filter { it.recommendedTime.contains("Утро") }
+        Log.d("morning", "$morning")
+        val evening = suited.filter { it.recommendedTime.contains("Вечер") }
+
+        val morningPlan = distributeOverWeek(morning, week)
+        val eveningPlan = distributeOverWeek(evening, week)
+        Log.d("morning plan: ", "$morningPlan")
+         val routines = week.map { date ->
+            Routine(
+                date = date,
+                morning = morningPlan.filterValues { date in it }.keys.toList(),
+                evening = eveningPlan.filterValues { date in it }.keys.toList()
+            )
+        }
+        routines.forEachIndexed { i, r ->
+            Log.d("Routine $i", "${r.date} ${r.morning.size} ${r.evening.size}")
+        }
+        _schedule.value = routines
+    }
+
 
     private val _usageStats = mutableStateOf(
         UsageStats(
@@ -119,7 +161,7 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
         )
     }
 
-    fun markProductsAsUsed(productId: Int, routine: String, dayIndex: Int, context: Context) {
+    fun markProductsAsUsed(productId: Int, routine: String, dayIndex: LocalDate, context: Context) {
         val key = dayIndex to routine
         val currentSet = _usedProductsMap[key]?.toMutableSet() ?: mutableSetOf()
         currentSet.add(productId)
@@ -128,7 +170,7 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
         markProductUsedAnalytic(productId)
     }
 
-    fun unmarkProductsAsUsed(productId: Int, routine: String, dayIndex: Int, context: Context) {
+    fun unmarkProductsAsUsed(productId: Int, routine: String, dayIndex: LocalDate, context: Context) {
         val key = dayIndex to routine
         val current = _usedProductsMap[key]?.toMutableSet() ?: return
         current.remove(productId)
@@ -137,11 +179,11 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
     }
 
     fun updatePersonalInfo(
-        gender: String = _personalInfo.value.selectedGender,
-        age: String = _personalInfo.value.selectedAge,
-        skinType: String = _personalInfo.value.selectedSkinType,
-        climate: String = _personalInfo.value.selectedClimate,
-        sunExposure: String = _personalInfo.value.selectedSunExposure,
+        gender: String,
+        age: String,
+        skinType: String,
+        climate: String,
+        sunExposure: String
     ) {
         _personalInfo.value = SelectedOptions(
             selectedGender = gender,
@@ -153,7 +195,7 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
     }
 
 
-    fun isProductUsed(productId: Int, routine: String, dayIndex: Int): Boolean {
+    fun isProductUsed(productId: Int, routine: String, dayIndex: LocalDate): Boolean {
         return _usedProductsMap[dayIndex to routine]?.contains(productId) == true
     }
 
@@ -177,18 +219,18 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
     private fun loadUsedProductsMap(context: Context) {
         viewModelScope.launch {
             context.dataStore.data.firstOrNull()?.let { preferences ->
-                val restoredMap = mutableMapOf<Pair<Int, String>, Set<Int>>()
+                val restoredMap = mutableMapOf<Pair<LocalDate, String>, Set<Int>>()
                 preferences.asMap().forEach { (prefKey, stringSet) ->
-                    val keyParts = prefKey.name.split(",") // ← ты сохраняешь через запятую, не "_"
+                    val keyParts = prefKey.name.split(",")
                     if (keyParts.size == 2 && stringSet is Set<*>) {
-                        val day = keyParts[0].toIntOrNull() ?: return@forEach
+                        val date = runCatching { LocalDate.parse(keyParts[0]) }.getOrNull() ?: return@forEach
                         val time = keyParts[1]
                         val productIds = (stringSet as Set<String>).mapNotNull { it.toIntOrNull() }.toSet()
-                        restoredMap[day to time] = productIds
+                        restoredMap[date to time] = productIds
                     }
                 }
                 _usedProductsMap.clear()
-                _usedProductsMap.putAll(restoredMap) // ← обновляем stateMap напрямую
+                _usedProductsMap.putAll(restoredMap)
             }
         }
     }

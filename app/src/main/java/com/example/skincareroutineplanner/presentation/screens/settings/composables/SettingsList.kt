@@ -27,7 +27,7 @@ fun SettingsList(
     lambdaSettings: () -> Unit,
     lambdaAbout: () -> Unit,
     lambdaLogOut: () -> Unit,
-    lambdaCreateSchedule: () -> Unit = {}
+    lambdaCreateSchedule: () -> Unit
 ) {
     val settingsItems = listOf(
         SettingItem("Мои средства", lambdaProducts),

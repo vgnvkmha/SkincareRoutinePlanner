@@ -31,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,49 +39,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.skincareroutineplanner.R
 import com.example.skincareroutineplanner.data.Product
 import com.example.skincareroutineplanner.data.ProductViewModel
-import com.example.skincareroutineplanner.presentation.screens.discover.composables.ImageAlertDialog
+import com.example.skincareroutineplanner.domain.schedule.Routine
 import com.example.skincareroutineplanner.ui.theme.Background
-import com.example.skincareroutineplanner.ui.theme.Error
 import com.example.skincareroutineplanner.ui.theme.OnPrimary
 import com.example.skincareroutineplanner.ui.theme.OnPrimaryContainer
 import com.example.skincareroutineplanner.ui.theme.OnSurface
 import com.example.skincareroutineplanner.ui.theme.Outline
-import com.example.skincareroutineplanner.ui.theme.OutlineDark
 import com.example.skincareroutineplanner.ui.theme.PrimaryContainer
 import com.example.skincareroutineplanner.ui.theme.PrimaryDark
 import com.example.skincareroutineplanner.ui.theme.Surface
 import com.example.skincareroutineplanner.ui.theme.mainFontFamily
+import okhttp3.internal.notify
 import java.time.LocalDate
 
-@SuppressLint("AutoboxingStateCreation") // подавляем предупреждение о состоянии Int
+@SuppressLint("AutoboxingStateCreation")
 @Composable
 fun ScheduleList(
     productViewModel: ProductViewModel,
     context: Context
 ) {
-
     LaunchedEffect(Unit) {
         productViewModel.getAllProducts()
     }
 
-    val allProducts: List<Product> = productViewModel.userProducts.value
-
-    // Состояние выбранной рутины: "Утро" или "Вечер"
-    var selectedRoutine by remember { mutableStateOf("Утро") }
-
-    val selectedProducts = allProducts.filter { it.recommendedTime.contains(selectedRoutine) }
+    //Скорее всего, ошибка в этом методе, я хочу спать
+//    productViewModel.updatePersonalInfo()
+    Log.d("personal info:","${productViewModel.personalInfo.value}")
+    val schedule: List<Routine> = productViewModel.schedule.value
     val usedProductsMap = productViewModel.usedProductsMap
 
     val daysOfWeek = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
     val currentDayIndex = LocalDate.now().dayOfWeek.value % 7
 
-
-    // Состояние выбранного дня недели (0..6)
+    // Выбор "Утро"/"Вечер"
+    var selectedRoutine by remember { mutableStateOf("Утро") }
+    // Выбор дня недели
     var selectedDayIndex by remember { mutableIntStateOf(currentDayIndex) }
 
     Column(
@@ -90,22 +85,20 @@ fun ScheduleList(
             .fillMaxWidth()
             .height(720.dp)
             .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp), // отступы внутри колонки
-        verticalArrangement = Arrangement.spacedBy(12.dp) //отступ между элементами по вертикали
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Кнопки-переключатели "Утро" / "Вечер"
+        // Кнопки "Утро"/"Вечер"
         Row(
             modifier = Modifier.fillMaxWidth(),
-            //оступы от краев и друг от друга максимальны и равны
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             listOf("Утро", "Вечер").forEach { routine ->
-                OutlinedButton( //кнопка чаще всего используется без заливки внутри
+                OutlinedButton(
                     onClick = { selectedRoutine = routine },
                     shape = RoundedCornerShape(20.dp),
-                    border = BorderStroke(1.dp, PrimaryDark), //цвет рамки
+                    border = BorderStroke(1.dp, PrimaryDark),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        // выделение активной кнопки
                         containerColor = if (routine == selectedRoutine) PrimaryContainer else Color.Transparent
                     )
                 ) {
@@ -118,21 +111,18 @@ fun ScheduleList(
             }
         }
 
-        // Прокручиваемый ряд дней недели
+        // Ряд дней недели
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            // вертикальные отступы внутри LazyRow
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
-            //как items() только позволяет получать индекс элемента
             itemsIndexed(daysOfWeek) { index, day ->
                 val isSelected = index == selectedDayIndex
                 OutlinedButton(
                     onClick = { selectedDayIndex = index },
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        // выделение текущего дня
                         containerColor = if (isSelected) PrimaryContainer else Color.Transparent
                     )
                 ) {
@@ -144,7 +134,7 @@ fun ScheduleList(
             }
         }
 
-        // Заголовок списка рутины
+        // Заголовок
         Text(
             text = "Моя рутина",
             style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
@@ -154,33 +144,47 @@ fun ScheduleList(
                 .padding(vertical = 8.dp)
         )
 
+        Log.d("schedule size", "${schedule.size}")
+        Log.d("schedule: ", "$schedule")
+        // Найдём продукты для выбранного дня и времени суток:
+        Log.d("selected day index: ", "$selectedDayIndex")
+        val execProducts = productViewModel.userProducts.value.filter { it.recommendedTime.contains(selectedRoutine) }
+        val products: List<Product> = schedule
+            .getOrNull(selectedDayIndex)
+            ?.let { if (selectedRoutine == "Утро") it.morning else it.evening }
+            ?: emptyList()
 
-        // Список средств ухода (LazyColumn с ограниченной высотой под 6 карточек)
+//        if (products.size == 0) {
+//            products = execProducts
+//        }
+
+        // Список карточек продуктов
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f) //займет все доступное место
-                .background(Surface),  // задний фон для разделения карточек
+                .weight(1f)
+                .background(Surface),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(selectedProducts, key = { product -> product.id  to selectedDayIndex to selectedRoutine}) { product ->
-                val isUsed = usedProductsMap[selectedDayIndex to selectedRoutine]?.contains(product.id) == true
-                Log.d("RECOMPOSITION", "AAAAAAAAAAAA")
+            val date = schedule.getOrNull(selectedDayIndex)?.date
+            Log.d("Products size", "${products.size}")
+            items(products) { product ->
+
+                val isUsed = productViewModel.isProductUsed(product.id, selectedRoutine, date ?: LocalDate.now())
                 Card(
                     shape = RoundedCornerShape(12.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // тень
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = if (isUsed) Outline  else  Background// фон карточки
+                        containerColor = if (isUsed) Outline else Background
                     )
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp), // внутренние отступы карточки
+                            .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-//                        ImageAlertDialog(product, height = 68)
                         Text(
                             text = product.name,
                             style = MaterialTheme.typography.bodyLarge,
@@ -192,45 +196,24 @@ fun ScheduleList(
                         IconButton(
                             onClick = {
                                 if (isUsed) {
-                                    productViewModel.unmarkProductsAsUsed(product.id, selectedRoutine, selectedDayIndex,  context )
+                                    productViewModel.unmarkProductsAsUsed(product.id, selectedRoutine, date ?: LocalDate.now(), context)
                                 } else {
-                                    productViewModel.markProductsAsUsed(product.id, selectedRoutine, selectedDayIndex, context)
+                                    productViewModel.markProductsAsUsed(product.id, selectedRoutine, date ?: LocalDate.now(), context)
                                 }
-                            /* TODO: логика отметки средства */ },
+                            },
                             modifier = Modifier
                                 .size(36.dp)
-                                .background(if (isUsed) Outline  else  PrimaryContainer, CircleShape) // круглая кнопка
+                                .background(if (isUsed) Outline else PrimaryContainer, CircleShape)
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.done),
                                 contentDescription = "Пометить как использованное",
-                                tint = OnPrimary // цвет иконки внутри
+                                tint = OnPrimary
                             )
                         }
                     }
                 }
-
             }
-        }
-
-        // Кнопка "Пропустить текущую рутину"
-        OutlinedButton(
-            onClick = { /* TODO */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            shape = RoundedCornerShape(12.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.error), // красная обводка
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = Color.Transparent,
-                contentColor = Error // цвет текста и иконок внутри
-            )
-        ) {
-            Text(
-                text = "Пропустить текущую рутину",
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium
-            )
         }
     }
 }

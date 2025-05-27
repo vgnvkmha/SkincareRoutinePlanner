@@ -23,7 +23,8 @@ fun SettingsScreen(
     lambdaLogOut: () -> Unit,
     lambdaHome: () -> Unit,
     lambdaSearch: () -> Unit,
-    lambdaAnalytic: () -> Unit
+    lambdaAnalytic: () -> Unit,
+    lambdaCreateSchedule: () -> Unit
 
 ) {
     var showDialog by remember { mutableStateOf(false) }
@@ -31,7 +32,8 @@ fun SettingsScreen(
         .fillMaxSize()
         .padding(8.dp)
         .background(Background)) {
-        SettingsList(lambdaProducts, lambdaSettings, lambdaAbout = {showDialog = true}, lambdaLogOut,)
+        SettingsList(lambdaProducts, lambdaSettings, lambdaAbout = {showDialog = true}, lambdaLogOut,
+            lambdaCreateSchedule)
         CustomBottomAppBar(
             lambdaHome = lambdaHome,
             lambdaSearch = lambdaSearch,
