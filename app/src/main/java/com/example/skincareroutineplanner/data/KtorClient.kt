@@ -6,11 +6,13 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.slf4j.event.LoggingEvent
 
 object KtorClient {
     private val json = Json {
-        ignoreUnknownKeys //игнорирует неизвестные поля в json (которых нет в data классе)
-        isLenient   //разрешает более свободный синтаксис json
+        ignoreUnknownKeys = true //игнорирует неизвестные поля в json (которых нет в data классе)
+        isLenient = true   //разрешает более свободный синтаксис json
+        explicitNulls = false
         coerceInputValues = true
     }
     val client: HttpClient by lazy {

@@ -13,7 +13,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @Database(
     entities = [Product::class, UsageEvent::class],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 @TypeConverters(Converter::class)
@@ -30,7 +30,7 @@ abstract class ProductsDatabase : RoomDatabase() {
          * можно раскомментировать `.fallbackToDestructiveMigration()`.
          * Иначе (для продакшена) лучше прописать MIGRATION_1_2.
          */
-        private val MIGRATION_1_2 = object : Migration(1, 2) {
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 // создаём таблицу для событий использования
                 db.execSQL("""
@@ -55,7 +55,7 @@ abstract class ProductsDatabase : RoomDatabase() {
                     // .fallbackToDestructiveMigration()
 
                     // вариант B: ручная миграция (сохранит старые данные)
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_2_3)
 
                     .allowMainThreadQueries()
 
