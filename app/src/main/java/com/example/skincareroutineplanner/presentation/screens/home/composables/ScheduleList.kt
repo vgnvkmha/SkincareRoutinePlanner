@@ -148,7 +148,7 @@ fun ScheduleList(
         Log.d("schedule: ", "$schedule")
         // Найдём продукты для выбранного дня и времени суток:
         Log.d("selected day index: ", "$selectedDayIndex")
-        val execProducts = productViewModel.userProducts.value.filter { it.recommendedTime.contains(selectedRoutine) }
+//        val execProducts = productViewModel.userProducts.value.filter { it.recommendedTime.contains(selectedRoutine) }
         val products: List<Product> = schedule
             .getOrNull(selectedDayIndex)
             ?.let { if (selectedRoutine == "Утро") it.morning else it.evening }

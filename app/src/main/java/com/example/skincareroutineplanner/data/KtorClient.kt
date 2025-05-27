@@ -11,6 +11,7 @@ object KtorClient {
     private val json = Json {
         ignoreUnknownKeys //игнорирует неизвестные поля в json (которых нет в data классе)
         isLenient   //разрешает более свободный синтаксис json
+        coerceInputValues = true
     }
     val client: HttpClient by lazy {
         HttpClient(Android) {      //использует Android движок на основе OkHttp

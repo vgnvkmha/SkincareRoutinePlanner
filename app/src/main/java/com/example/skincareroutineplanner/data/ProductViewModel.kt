@@ -51,23 +51,16 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
         startDate: LocalDate = LocalDate.now()
     ) {
         val week = (0L until 7L).map { startDate.plusDays(it) }
-        products.forEach { p ->
-            Log.d("PRODUCT_DEBUG", "id=${p.id} name=${p.name} recommendedForSkinTypes=${p.recommendedForSkinTypes} recommendedTime=${p.recommendedTime}")
-        }
-        Log.d("SKIN_TYPE", "selectedSkinType= ${personalInfo.value.selectedSkinType}")
         val suited = products.filter { p ->
-            (p.recommendedForSkinTypes.contains(personalInfo.value.selectedSkinType) ||
+            (p.recommendedForSkinTypes!!.contains(personalInfo.value.selectedSkinType) ||
                     p.recommendedForSkinTypes.contains("Все"))
         }
-        Log.d("suited size","${suited.size}")
 
-        val morning = suited.filter { it.recommendedTime.contains("Утро") }
-        Log.d("morning", "$morning")
-        val evening = suited.filter { it.recommendedTime.contains("Вечер") }
+        val morning = suited.filter { it.recommendedTime!!.contains("Утро") }
+        val evening = suited.filter { it.recommendedTime!!.contains("Вечер") }
 
         val morningPlan = distributeOverWeek(morning, week)
         val eveningPlan = distributeOverWeek(evening, week)
-        Log.d("morning plan: ", "$morningPlan")
          val routines = week.map { date ->
             Routine(
                 date = date,
@@ -75,12 +68,28 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
                 evening = eveningPlan.filterValues { date in it }.keys.toList()
             )
         }
-        routines.forEachIndexed { i, r ->
-            Log.d("Routine $i", "${r.date} ${r.morning.size} ${r.evening.size}")
-        }
+
         _schedule.value = routines
     }
-
+//    private fun filterByAge(routines: List<Routine>): List<Routine> {
+//        val selectedAge = _personalInfo.value.selectedAge
+//        routines.forEach { routine ->
+//            // 1) Определяем, как именно будем фильтровать одну Routine
+//            if (selectedAge == "менее 20") {
+//                // Если утром больше 3 продуктов — отбрасываем Eye Cream и Toner
+//                val morning = routine.morning
+//                val evening = routine.evening
+//                if (morning.size > 3 || evening.size > 3 ) {
+//                    // если в утренней рутине есть запретные продукты — помечаем эту routine как неподходящую
+//                    morning.none { it.name.contains("Eye Cream") || it.name.contains("Toner") }
+//                    evening.none { it.name.contains("Eye Cream") || it.name.contains("Toner") }
+//                }
+//                routine.morning = morning
+//                routine.evening = evening
+//            }
+//        }
+//        return routines
+//    }
 
     private val _usageStats = mutableStateOf(
         UsageStats(
@@ -103,14 +112,14 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
                         .get("http://$localIP:8080/api/products")
                         .body() //Получаем тело запроса
                     Log.d("response size", "${response.size}")
-                    _searchProducts.value = response.filter { it.name.contains(searchText, ignoreCase = true) }.map { it.copy() }   //оставляем только подходящие по имени средства
+                    _searchProducts.value = response.filter { it.name!!.contains(searchText, ignoreCase = true) }.map { it.copy() }   //оставляем только подходящие по имени средства
                     Log.d("filtered products", "size: ${_searchProducts.value.size}")
                     _isSearching.value = true   /*изменяем значение закрытого поля, чтобы понимать,
                     какой список выводить на экран
                     */
                 }
                 catch (e: Exception) {
-                    Log.e("Не получилось сделать запрос","Request is failed")
+                    Log.e("Не получилось сделать запрос","$e")
                 }
             }
         }

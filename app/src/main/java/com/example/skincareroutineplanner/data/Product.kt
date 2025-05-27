@@ -11,7 +11,7 @@ data class Product(
     @PrimaryKey(autoGenerate = false)
     val id:Int,
     val name:String,
-    val ingredients: List<String>,
+    val ingredients: List<String>? = emptyList(),
     val recommendedForSkinTypes: List<String>,
     val usageFrequencyPerWeek: Int,
     val recommendedTime: List<String>,

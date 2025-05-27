@@ -10,7 +10,7 @@ fun distributeOverWeek(
     val result = mutableMapOf<Product1, MutableList<LocalDate>>()
     product.forEach { p->
         //Интервал между использованиями
-        val step = days.size.toDouble() / p.usageFrequencyPerWeek
+        val step = days.size.toDouble() / p.usageFrequencyPerWeek!!
         var cursor = 0.0
         repeat(p.usageFrequencyPerWeek) {
             val dayIndex = cursor.toInt().coerceIn(days.indices)

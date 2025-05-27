@@ -66,7 +66,7 @@ fun CustomAlertDialog(
                         .align(Alignment.CenterHorizontally)
                 )
                 ImageAlertDialog(product, height = 280) //Изображение по url
-                Text(text = product.ingredients.take(5).joinToString(" ") + "...",
+                Text(text = product.ingredients!!.take(5).joinToString(" ") + "...",
                     fontSize = 16.sp,
                     fontFamily = mainFontFamily,
                     fontWeight = FontWeight.Black,
