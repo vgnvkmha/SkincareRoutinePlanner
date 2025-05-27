@@ -44,6 +44,7 @@ import com.example.skincareroutineplanner.R
 import com.example.skincareroutineplanner.data.Product
 import com.example.skincareroutineplanner.data.ProductViewModel
 import com.example.skincareroutineplanner.domain.schedule.Routine
+import com.example.skincareroutineplanner.domain.schedule.prettySchedule
 import com.example.skincareroutineplanner.ui.theme.Background
 import com.example.skincareroutineplanner.ui.theme.OnPrimary
 import com.example.skincareroutineplanner.ui.theme.OnPrimaryContainer
@@ -69,7 +70,11 @@ fun ScheduleList(
     //Скорее всего, ошибка в этом методе, я хочу спать
 //    productViewModel.updatePersonalInfo()
     Log.d("personal info:","${productViewModel.personalInfo.value}")
-    val schedule: List<Routine> = productViewModel.schedule.value
+    val schedule: List<Routine> = prettySchedule( productViewModel.schedule.value, productViewModel.productsTypes)
+    schedule.forEach {
+        Log.d("date: ", "${it.date}")
+        Log.d("products", "${it.morning}")
+    }
     val usedProductsMap = productViewModel.usedProductsMap
 
     val daysOfWeek = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")

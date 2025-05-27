@@ -46,6 +46,9 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
     private val _schedule = mutableStateOf<List<Routine>>(emptyList())
     val schedule: State<List<Routine>> = _schedule
 
+    val productsTypes: List<String> = listOf("Foam", "Cream", "Gel", "Water", "Serum", "Ampoule",
+        "Toner", "Oil", "Fluid", "Sunscreen", "Lotion", "Pad")
+
     fun generateSchedule(
         products: List<Product>,
         startDate: LocalDate = LocalDate.now()
@@ -56,11 +59,11 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
                     p.recommendedForSkinTypes.contains("Все"))
         }
 
-        val morning = suited.filter { it.recommendedTime!!.contains("Утро") }
-        val evening = suited.filter { it.recommendedTime!!.contains("Вечер") }
+        val morning = suited.filter { it.recommendedTime.contains("Утро") }
+        val evening = suited.filter { it.recommendedTime.contains("Вечер") }
 
-        val morningPlan = distributeOverWeek(morning, week)
-        val eveningPlan = distributeOverWeek(evening, week)
+        val morningPlan = distributeOverWeek(morning, week, productsTypes)
+        val eveningPlan = distributeOverWeek(evening, week, productsTypes)
          val routines = week.map { date ->
             Routine(
                 date = date,
@@ -70,6 +73,9 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
         }
 
         _schedule.value = routines
+        _schedule.value.forEach {
+            Log.d("date of schedule: ", "${it.date}")
+        }
     }
 //    private fun filterByAge(routines: List<Routine>): List<Routine> {
 //        val selectedAge = _personalInfo.value.selectedAge
@@ -143,6 +149,7 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
                 Log.e("ProductViewModel", "Ошибка при получении продуктов", e)
             }
         }
+        generateSchedule(_userProducts.value)
     }
 
     //метод записи времени использования средства
