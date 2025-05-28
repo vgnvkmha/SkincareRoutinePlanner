@@ -1,4 +1,4 @@
-package com.example.skincareroutineplanner.presentation.screens.settings.composables
+package com.example.skincareroutineplanner.presentation.screens.settings.composables.userSettings
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column

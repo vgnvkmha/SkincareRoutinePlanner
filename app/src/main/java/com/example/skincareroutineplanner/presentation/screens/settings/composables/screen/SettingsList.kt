@@ -1,4 +1,4 @@
-package com.example.skincareroutineplanner.presentation.screens.settings.composables
+package com.example.skincareroutineplanner.presentation.screens.settings.composables.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

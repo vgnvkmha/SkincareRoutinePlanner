@@ -1,4 +1,4 @@
-package com.example.skincareroutineplanner.presentation.screens.settings.composables
+package com.example.skincareroutineplanner.presentation.screens.settings.composables.userSettings
 
 data class SelectedOptions (
     val selectedGender: String,

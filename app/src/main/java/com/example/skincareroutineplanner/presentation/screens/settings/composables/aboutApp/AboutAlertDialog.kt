@@ -1,4 +1,4 @@
-package com.example.skincareroutineplanner.presentation.screens.settings.composables
+package com.example.skincareroutineplanner.presentation.screens.settings.composables.aboutApp
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

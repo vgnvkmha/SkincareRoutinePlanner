@@ -2,6 +2,7 @@ package com.example.skincareroutineplanner.presentation.screens.discover.composa
 
 
 
+
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,7 +24,7 @@ fun ImageAlertDialog(
         contentDescription = "Изображения средства ${product.name}",
         modifier = Modifier
             .fillMaxWidth()
-            .height(height.dp)
+            .height((height).dp)
             .clip(RoundedCornerShape(8.dp)),
         contentScale = ContentScale.Crop
     )

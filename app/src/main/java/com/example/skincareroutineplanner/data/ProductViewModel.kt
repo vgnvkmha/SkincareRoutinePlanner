@@ -13,7 +13,7 @@ import com.example.skincareroutineplanner.domain.schedule.Routine
 import com.example.skincareroutineplanner.domain.schedule.distributeOverWeek
 import com.example.skincareroutineplanner.presentation.screens.analytics.data.UsageRepository
 import com.example.skincareroutineplanner.presentation.screens.analytics.data.UsageStats
-import com.example.skincareroutineplanner.presentation.screens.settings.composables.SelectedOptions
+import com.example.skincareroutineplanner.presentation.screens.settings.composables.userSettings.SelectedOptions
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +29,10 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
 
     private val _userProducts = mutableStateOf<List<Product>>(emptyList()) //список добавленных пользователем средств (постоянные)
     val userProducts: State<List<Product>> = _userProducts
+
+    init {
+        getAllProducts()
+    }
 
     private val _isSearching = mutableStateOf(false)    //ViewModel может изменять значение
     val isSearching: State<Boolean> = _isSearching            //UI может только читать значение
@@ -77,25 +81,6 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
             Log.d("date of schedule: ", "${it.date}")
         }
     }
-//    private fun filterByAge(routines: List<Routine>): List<Routine> {
-//        val selectedAge = _personalInfo.value.selectedAge
-//        routines.forEach { routine ->
-//            // 1) Определяем, как именно будем фильтровать одну Routine
-//            if (selectedAge == "менее 20") {
-//                // Если утром больше 3 продуктов — отбрасываем Eye Cream и Toner
-//                val morning = routine.morning
-//                val evening = routine.evening
-//                if (morning.size > 3 || evening.size > 3 ) {
-//                    // если в утренней рутине есть запретные продукты — помечаем эту routine как неподходящую
-//                    morning.none { it.name.contains("Eye Cream") || it.name.contains("Toner") }
-//                    evening.none { it.name.contains("Eye Cream") || it.name.contains("Toner") }
-//                }
-//                routine.morning = morning
-//                routine.evening = evening
-//            }
-//        }
-//        return routines
-//    }
 
     private val _usageStats = mutableStateOf(
         UsageStats(
@@ -141,15 +126,17 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
         }
     }
     fun getAllProducts() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
                 val products = repository.getAllProducts()
-                _userProducts.value = products
+                val fresh = products.toList()
+                _userProducts.value = fresh
+                generateSchedule(_userProducts.value)
             } catch (e: Exception) {
                 Log.e("ProductViewModel", "Ошибка при получении продуктов", e)
             }
         }
-        generateSchedule(_userProducts.value)
+
     }
 
     //метод записи времени использования средства
@@ -219,6 +206,7 @@ class ProductViewModel(application: Application, context: Context) : AndroidView
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteProductById(id)
         }
+        _userProducts.value = _userProducts.value.filter { it.id != id }
     }
 
     suspend fun saveUsedProductsMap(context: Context) {

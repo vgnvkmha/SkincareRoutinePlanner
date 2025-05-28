@@ -1,9 +1,5 @@
 package com.example.skincareroutineplanner.domain.schedule
 
-import com.example.skincareroutineplanner.data.Product
-import com.example.skincareroutineplanner.presentation.screens.settings.composables.SelectedOptions
-import java.time.LocalDate
-
 //fun generateSchedule(
 //    profile: SelectedOptions,
 //    products: List<Product>,

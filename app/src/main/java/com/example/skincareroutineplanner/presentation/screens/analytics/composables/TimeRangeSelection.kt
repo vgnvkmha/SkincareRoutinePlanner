@@ -17,8 +17,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.skincareroutineplanner.ui.theme.Background
+import com.example.skincareroutineplanner.ui.theme.OnPrimary
+import com.example.skincareroutineplanner.ui.theme.OnPrimaryContainer
 import com.example.skincareroutineplanner.ui.theme.OnSecondaryContainer
 import com.example.skincareroutineplanner.ui.theme.OnSurface
+import com.example.skincareroutineplanner.ui.theme.PrimaryContainer
 import com.example.skincareroutineplanner.ui.theme.SecondaryContainer
 import com.example.skincareroutineplanner.ui.theme.Surface
 import com.example.skincareroutineplanner.ui.theme.mainFontFamily
@@ -32,7 +35,7 @@ fun TimeRangeSelector() {
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
-            .background(Background)
+            .background(Surface)
             .padding(4.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -44,10 +47,10 @@ fun TimeRangeSelector() {
                 fontFamily = mainFontFamily,
                 modifier = Modifier
                     .clip(RoundedCornerShape(12.dp))
-                    .background(if (isSelected) SecondaryContainer else Surface)
+                    .background(if (isSelected) PrimaryContainer else Surface)
                     .clickable { selectedOption.value = option }
                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                color = if (isSelected) OnSecondaryContainer else OnSurface,
+                color = if (isSelected) OnPrimaryContainer else OnSurface,
                 fontWeight = FontWeight.Normal
             )
         }

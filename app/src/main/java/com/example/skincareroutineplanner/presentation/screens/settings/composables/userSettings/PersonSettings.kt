@@ -1,4 +1,4 @@
-package com.example.skincareroutineplanner.presentation.screens.settings.composables
+package com.example.skincareroutineplanner.presentation.screens.settings.composables.userSettings
 
 import android.content.Context
 import android.widget.Toast
@@ -32,10 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.skincareroutineplanner.data.ProductViewModel
 import com.example.skincareroutineplanner.ui.theme.Background
-import com.example.skincareroutineplanner.ui.theme.OnBackground
 import com.example.skincareroutineplanner.ui.theme.OnPrimaryContainer
 import com.example.skincareroutineplanner.ui.theme.Outline
-import com.example.skincareroutineplanner.ui.theme.Primary
 import com.example.skincareroutineplanner.ui.theme.PrimaryContainer
 import com.example.skincareroutineplanner.ui.theme.Surface
 import com.example.skincareroutineplanner.ui.theme.mainFontFamily

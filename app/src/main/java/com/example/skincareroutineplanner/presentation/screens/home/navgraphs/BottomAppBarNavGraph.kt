@@ -13,7 +13,8 @@ import com.example.skincareroutineplanner.presentation.screens.home.screens.Anal
 import com.example.skincareroutineplanner.presentation.screens.home.screens.HomeScreen
 import com.example.skincareroutineplanner.presentation.screens.home.screens.SearchScreen
 import com.example.skincareroutineplanner.presentation.screens.home.screens.SettingsScreen
-import com.example.skincareroutineplanner.presentation.screens.settings.composables.PersonSettings
+import com.example.skincareroutineplanner.presentation.screens.settings.composables.myProducts.MyProducts
+import com.example.skincareroutineplanner.presentation.screens.settings.composables.userSettings.PersonSettings
 import java.time.LocalDate
 
 
@@ -60,7 +61,7 @@ fun BottomAppBarNavigation() {
         }
         composable("settings") {
             SettingsScreen(
-                lambdaProducts = {},
+                lambdaProducts = {navController.navigate("userProducts")},
                 lambdaSettings = {navController.navigate("userSettings")},
                 lambdaLogOut = {},
                 lambdaHome = {navController.navigate("home")},
@@ -80,6 +81,12 @@ fun BottomAppBarNavigation() {
                     navController.popBackStack()},
                 productViewModel = viewModel,
                 context = context
+            )
+        }
+        composable("userProducts") {
+            MyProducts(
+                productViewModel = viewModel,
+                lambdaNavigateToSearch = {navController.navigate("search")}
             )
         }
     }
